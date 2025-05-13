@@ -22,9 +22,9 @@ public class TrafficLight {
     private LightState _currentLightState;
     // and 3 image for red green yellow states
 
-    public TrafficLight(Direction direction, int greenLightDuration, List<Car> carsInLine) {
+    public TrafficLight(Direction direction, List<Car> carsInLine) {
         _direction = direction;
-        _greenLightDuration = greenLightDuration;
+        _greenLightDuration = 0;
         _carsInLine = carsInLine;
         _currentLightState = LightState.RED;
     }
@@ -35,5 +35,13 @@ public class TrafficLight {
             case YELLOW -> _currentLightState = LightState.GREEN;
             case GREEN -> _currentLightState = LightState.RED;
         }
+    }
+
+    public int getCarCountInLine(){
+        return _carsInLine.size();
+    }
+
+    public void setGreenLightDuration(int greenLightDuration){
+        _greenLightDuration = greenLightDuration;
     }
 }
