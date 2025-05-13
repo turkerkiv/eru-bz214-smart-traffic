@@ -1,2 +1,2 @@
 # eru-bz214-visual-prog-tsm
-Made for visual programming class' project and by tsm team
+Made for visual programming class' smart traffic coordinator project and by tsm team
