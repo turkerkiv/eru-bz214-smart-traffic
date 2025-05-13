@@ -16,6 +16,7 @@ public class TrafficLight {
         WEST
     }
 
+    private static final int YELLOW_DURATION = 3;
     private Direction _direction;
     private int _greenLightDuration;
     private List<Car> _carsInLine;

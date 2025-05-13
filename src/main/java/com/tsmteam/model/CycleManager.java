@@ -4,14 +4,14 @@ import java.util.List;
 
 public class CycleManager {
     CarCreator _carCreator;
-    GreenLightDurationCalculator _glDurationCalculator;
+    DurationCalculator _durationCalculator;
     private static final int CYCLE_SECONDS = 120;
     private int _currentCycle = 0;
     private List<TrafficLight> _lights;
 
     public CycleManager() {
         _carCreator = new CarCreator();
-        _glDurationCalculator = new GreenLightDurationCalculator();
+        _durationCalculator = new DurationCalculator();
     }
 
     public void startNewCycle() {
@@ -49,7 +49,7 @@ public class CycleManager {
 
         for (var light : _lights)
         {
-            int glDuration = _glDurationCalculator.calculateDuration(light.getCarCountInLine(), totalCars, CYCLE_SECONDS);
+            int glDuration = _durationCalculator.calculateGreenDuration(light.getCarCountInLine(), totalCars, CYCLE_SECONDS);
             light.setGreenLightDuration(glDuration);
         }
 
