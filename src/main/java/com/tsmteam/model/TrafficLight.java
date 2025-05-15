@@ -3,17 +3,10 @@ package main.java.com.tsmteam.model;
 import java.util.List;
 
 public class TrafficLight {
-    public enum LightState {
+    private enum LightState {
         RED,
         YELLOW,
         GREEN,
-    }
-
-    public enum Direction {
-        NORTH,
-        SOUTH,
-        EAST,
-        WEST
     }
 
     private static final int YELLOW_DURATION = 3;
