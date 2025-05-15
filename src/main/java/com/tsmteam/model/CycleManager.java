@@ -24,25 +24,25 @@ public class CycleManager {
 
         _lights.add(
                 new TrafficLight(
-                        TrafficLight.Direction.SOUTH,
+                        Direction.SOUTH,
                         _carCreator.CreateCars(southCars)
                 )
         );
         _lights.add(
                 new TrafficLight(
-                        TrafficLight.Direction.NORTH,
+                        Direction.NORTH,
                         _carCreator.CreateCars(northCars)
                 )
         );
         _lights.add(
                 new TrafficLight(
-                        TrafficLight.Direction.EAST,
+                        Direction.EAST,
                         _carCreator.CreateCars(eastCars)
                 )
         );
         _lights.add(
                 new TrafficLight(
-                        TrafficLight.Direction.WEST,
+                        Direction.WEST,
                         _carCreator.CreateCars(westCars)
                 )
         );

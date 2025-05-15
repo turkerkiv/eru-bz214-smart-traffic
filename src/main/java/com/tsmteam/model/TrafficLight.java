@@ -10,14 +10,14 @@ public class TrafficLight {
     }
 
     private static final int YELLOW_DURATION = 3;
-    private Direction _direction;
     private int _greenLightDuration;
+    private Direction _position;
     private List<Car> _carsInLine;
     private LightState _currentLightState;
     // and 3 image for red green yellow states
 
-    public TrafficLight(Direction direction, List<Car> carsInLine) {
-        _direction = direction;
+    public TrafficLight(Direction position, List<Car> carsInLine) {
+        _position = position;
         _greenLightDuration = 0;
         _carsInLine = carsInLine;
         _currentLightState = LightState.RED;

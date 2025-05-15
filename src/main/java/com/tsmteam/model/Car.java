@@ -1,5 +1,6 @@
 package main.java.com.tsmteam.model;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public abstract class Car {
@@ -12,22 +13,24 @@ public abstract class Car {
     private String _type;
     private MovementState _currentMovementState;
     private Direction _destination;
+    private Direction _currentPos;
 
     // ve bir de fotoğrafı
 
-    public Car(int speed, String type) {
+    public Car(int speed, String type, Direction currentPos) {
         _speed = speed;
         _type = type;
         _currentMovementState = MovementState.WAITING;
+        _currentPos = currentPos;
 
         setRandomDestination();
     }
 
     private void setRandomDestination() {
-            Direction[] directions = Direction.values();
-            Random rnd = new Random();
-            int randomIndex = rnd.nextInt(directions.length);
-            _destination = directions[randomIndex];
+        Direction[] directions = Arrays.stream(Direction.values()).filter(dir -> dir != _currentPos).toArray(Direction[]::new);
+        Random rnd = new Random();
+        int randomIndex = rnd.nextInt(directions.length);
+        _destination = directions[randomIndex];
     }
 
     public void changeMovementState() {
@@ -36,4 +39,5 @@ public abstract class Car {
             case WAITING -> _currentMovementState = MovementState.MOVING;
         }
     }
+
 }
