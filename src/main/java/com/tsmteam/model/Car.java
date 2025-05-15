@@ -40,4 +40,10 @@ public abstract class Car {
         }
     }
 
+    public void move() {
+        switch (_currentMovementState) {
+            case MOVING -> _currentMovementState = MovementState.MOVING;
+            case WAITING -> _currentMovementState = MovementState.WAITING;
+        }
+    }
 }

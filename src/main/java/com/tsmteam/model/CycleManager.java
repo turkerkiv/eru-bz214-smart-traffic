@@ -1,17 +1,23 @@
 package main.java.com.tsmteam.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CycleManager {
     CarCreator _carCreator;
     DurationCalculator _durationCalculator;
+    AnimationManager _animManager;
     private static final int CYCLE_SECONDS = 120;
     private int _currentCycle = 0;
     private List<TrafficLight> _lights;
 
     public CycleManager() {
+        _lights = new ArrayList<>();
+
         _carCreator = new CarCreator();
         _durationCalculator = new DurationCalculator();
+        _animManager = new AnimationManager(_lights);
     }
 
     public void startNewCycle() {
@@ -47,11 +53,14 @@ public class CycleManager {
                 )
         );
 
+
         for (var light : _lights)
         {
             int glDuration = _durationCalculator.calculateGreenDuration(light.getCarCountInLine(), totalCars, CYCLE_SECONDS);
             light.setGreenLightDuration(glDuration);
         }
+
+        Collections.shuffle(_lights);
 
         _currentCycle++;
     }

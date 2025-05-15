@@ -35,7 +35,12 @@ public class TrafficLight {
         return _carsInLine.size();
     }
 
+    public List<Car> getCars(){
+        return _carsInLine;
+    }
+
     public void setGreenLightDuration(int greenLightDuration){
         _greenLightDuration = greenLightDuration;
     }
+
 }
