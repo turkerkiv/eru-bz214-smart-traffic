@@ -1,26 +1,25 @@
 package main.java.com.tsmteam.model;
 
+import main.java.com.tsmteam.enums.Direction;
+import main.java.com.tsmteam.enums.LightState;
+
+import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 
 public class TrafficLight {
-    private enum LightState {
-        RED,
-        YELLOW,
-        GREEN,
+    private List<Vehicle> _vehiclesInLine;
+    private int _greenLightDuration;
+    private LightState _currentLightState;
+    private Dictionary<LightState, String> _lightImages;
+
+    public TrafficLight() {
+        _vehiclesInLine = new ArrayList<>();
+        // _lightImages = new Dictionary<LightState, String>();
     }
 
-    private static final int YELLOW_DURATION = 3;
-    private int _greenLightDuration;
-    private Direction _position;
-    private List<Car> _carsInLine;
-    private LightState _currentLightState;
-    // and 3 image for red green yellow states
+    private void changeLightImage() {
 
-    public TrafficLight(Direction position, List<Car> carsInLine) {
-        _position = position;
-        _greenLightDuration = 0;
-        _carsInLine = carsInLine;
-        _currentLightState = LightState.RED;
     }
 
     public void changeLightState() {
@@ -31,16 +30,9 @@ public class TrafficLight {
         }
     }
 
-    public int getCarCountInLine(){
-        return _carsInLine.size();
+    public void calculateGLDuration(int totalCars, int cycleDuration) {
+        _greenLightDuration = _vehiclesInLine.size() / totalCars * cycleDuration;
     }
 
-    public List<Car> getCars(){
-        return _carsInLine;
-    }
-
-    public void setGreenLightDuration(int greenLightDuration){
-        _greenLightDuration = greenLightDuration;
-    }
 
 }

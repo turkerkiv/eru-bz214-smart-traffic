@@ -1,4 +1,4 @@
-package main.java.com.tsmteam.model;
+package main.java.com.tsmteam.enums;
 
 public enum Direction {
         NORTH,
