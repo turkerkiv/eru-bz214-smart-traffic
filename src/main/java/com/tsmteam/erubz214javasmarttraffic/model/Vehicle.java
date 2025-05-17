@@ -1,30 +1,34 @@
-package main.java.com.tsmteam.model;
+package com.tsmteam.erubz214javasmarttraffic.model;
 
-import main.java.com.tsmteam.enums.Direction;
-import main.java.com.tsmteam.enums.VehicleState;
+import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
+import com.tsmteam.erubz214javasmarttraffic.enums.VehicleState;
+import javafx.scene.shape.Rectangle;
 
 public class Vehicle {
     private String _name;
-    private int _speed;
-    private Direction _initialPos;
-    private String _imgPath;
+    private double _speed;
+    private Rectangle _uiImage;
     private VehicleState _vehicleState;
 
-    public Vehicle(String name, int speed, Direction initalPos, String imgPath)
-    {
+    public Vehicle(String name, double speed, Rectangle uiImage) {
         _name = name;
         _speed = speed;
-        _initialPos = initalPos;
-        _imgPath = imgPath;
+        _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
     }
 
     public void move(Direction destination) {
+        _uiImage.setY(_uiImage.getY() - _speed);
+    }
 
+    public void move(double x, double y)
+    {
+        _uiImage.setX(x);
+        _uiImage.setY(y);
     }
 
     public void changeState() {
-        switch(_vehicleState){
+        switch (_vehicleState) {
             case MOVING -> _vehicleState = VehicleState.WAITING;
             case WAITING -> _vehicleState = VehicleState.MOVING;
         }
