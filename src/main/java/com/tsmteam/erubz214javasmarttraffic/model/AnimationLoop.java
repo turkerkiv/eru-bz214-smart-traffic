@@ -5,6 +5,6 @@ import javafx.animation.AnimationTimer;
 public class AnimationLoop extends AnimationTimer {
     @Override
     public void handle(long l) {
-        CycleManager.runCycle();
+        CycleManager.runCycle(l);
     }
 }

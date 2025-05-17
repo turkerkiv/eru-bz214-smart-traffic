@@ -10,16 +10,19 @@ import java.util.List;
 
 public class TrafficLight {
     private List<Vehicle> _vehiclesInLine;
-    private int _greenLightDuration;
+    private double _greenLightDuration;
     private LightState _currentLightState;
     private Dictionary<LightState, String> _lightImages;
     private Direction _location;
+    public static final double YELLOW_DURATION = 1;
 
 
     private Rectangle _roadUIImage;
     private Map<Point2D, Vehicle> _roadPoints;
 
-    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, int greenLightDuration) {
+    private double _lightLastChangeTime;
+
+    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, double greenLightDuration) {
         _vehiclesInLine = new ArrayList<>();
         // _lightImages = new Dictionary<LightState, String>();
         _roadUIImage = roadUIImage;
@@ -31,28 +34,44 @@ public class TrafficLight {
         addVehiclesToLine(vehicles);
 
         _greenLightDuration = greenLightDuration;
+
+        _currentLightState = LightState.RED;
     }
 
     private void changeLightImage() {
 
     }
 
-    public boolean runUntilRed() {
+    public boolean runUntilRed(double now) {
         switch (_currentLightState) {
             case RED -> {
                 _currentLightState = LightState.YELLOW;
+                _lightLastChangeTime = System.nanoTime();
                 changeLightImage();
             }
             case YELLOW -> {
-                // wait 3 etc. seconds
-                _currentLightState = LightState.GREEN;
-                changeLightImage();
+                double elapsedSecondsInYellow = (now - _lightLastChangeTime) / 1_000_000_000.0;
+                System.out.println(elapsedSecondsInYellow);
+                System.out.println("NOW YELLOW");
+                if(elapsedSecondsInYellow > YELLOW_DURATION)
+                {
+                    _lightLastChangeTime = System.nanoTime();
+                    _currentLightState = LightState.GREEN;
+                    changeLightImage();
+                }
             }
             case GREEN -> {
-                // wait gl duration seconds
-                _currentLightState = LightState.RED;
-                changeLightImage();
-                return true;
+                double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
+                // move vehicles right here
+                System.out.println(elapsedSecondsInGreen);
+                System.out.println("NOW GREEN");
+                if(elapsedSecondsInGreen > _greenLightDuration)
+                {
+                    _lightLastChangeTime = System.nanoTime();
+                    _currentLightState = LightState.RED;
+                    changeLightImage();
+                    return true;
+                }
             }
         }
 

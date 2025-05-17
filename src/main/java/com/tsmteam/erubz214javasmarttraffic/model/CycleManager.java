@@ -9,8 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CycleManager {
-    public static final int CYCLE_DURATION = 120;
-    public static final int YELLOW_DURATION = 1;
+    public static final double CYCLE_DURATION = 120;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;
     private static int _currentLightIndex = 0;
@@ -27,19 +26,19 @@ public class CycleManager {
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane);
-            int greenLightDuration = vehicles.length / totalCars * CYCLE_DURATION;
+            double greenLightDuration = (double) vehicles.length / totalCars * CYCLE_DURATION;
             TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], vehicles, greenLightDuration);
             _trafficLights.add(light);
         }
     }
 
-    public static void runCycle() {
+    public static void runCycle(double now) {
         if (_currentLightIndex == _trafficLights.size())
             return;
 
         if (_currentLight == null) {
             _currentLight = _trafficLights.get(_currentLightIndex);
-        } else if (_currentLight.runUntilRed()) {
+        } else if (_currentLight.runUntilRed(now)) {
             _currentLight = null;
             _currentLightIndex++;
         }

@@ -5,7 +5,6 @@ import com.tsmteam.erubz214javasmarttraffic.model.CycleManager;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.animation.AnimationTimer;
 
 public class TrafficController {
 
