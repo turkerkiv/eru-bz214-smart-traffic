@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.tsmteam.erubz214javasmarttraffic.controller.TrafficController">
+    <Rectangle fx:id="westRoad" arcHeight="5.0" arcWidth="5.0" fill="#798086" height="100.0" layoutY="250.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
+    <Rectangle fx:id="southRoad" arcHeight="5.0" arcWidth="5.0" fill="#798086" height="200.0" layoutX="250.0" layoutY="400.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="100.0" />
+    <Rectangle fx:id="eastRoad" arcHeight="5.0" arcWidth="5.0" fill="#798086" height="100.0" layoutX="400.0" layoutY="250.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
+    <Rectangle fx:id="northRoad" arcHeight="5.0" arcWidth="5.0" fill="#798086" height="200.0" layoutX="250.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="100.0" />
+    <Rectangle arcHeight="100.0" arcWidth="100.0" fill="#b1b5b9" height="200.0" layoutX="200.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="200.0" />
+    <Line endX="100.0" layoutX="100.0" layoutY="300.0" startX="-100.0" />
+    <Line endX="100.0" layoutX="500.0" layoutY="300.0" startX="-100.0" />
+    <Line endX="100.0" layoutX="301.0" layoutY="500.0" rotate="90.0" startX="-100.0" />
+    <Line endX="100.0" layoutX="302.0" layoutY="100.0" rotate="90.0" startX="-100.0" />
+    <Pane fx:id="carsPane"></Pane>
+    <Pane fx:id="lightsPane"></Pane>
+</Pane>

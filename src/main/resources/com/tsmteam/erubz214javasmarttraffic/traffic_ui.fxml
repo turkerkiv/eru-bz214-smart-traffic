@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<Pane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" prefWidth="600" prefHeight="600">
+
+    <!-- Vertical road -->
+    <Rectangle fx:id="verticalRoad" x="240" y="0" width="120" height="600" fill="DARKGRAY" />
+
+    <!-- Horizontal road -->
+    <Rectangle fx:id="horizontalRoad" x="0" y="240" width="600" height="120" fill="DARKGRAY" />
+
+    <!-- Intersection box -->
+    <Rectangle fx:id="intersection" x="240" y="240" width="120" height="120" fill="GRAY" />
+
+    <!-- Example car rectangle on north lane -->
+    <Rectangle fx:id="carNorth1" x="290" y="550" width="20" height="40" fill="RED" />
+
+    <!-- Example car rectangle on east lane -->
+    <Rectangle fx:id="carEast1" x="50" y="290" width="20" height="40" fill="BLUE" rotate="90"/>
+
+</Pane>
