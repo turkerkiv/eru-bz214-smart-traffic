@@ -1,4 +1,4 @@
-package main.java.com.tsmteam.enums;
+package com.tsmteam.erubz214javasmarttraffic.enums;
 
 public enum Direction {
         NORTH,
