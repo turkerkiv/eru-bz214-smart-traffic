@@ -4,7 +4,6 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.LightState;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
@@ -20,34 +19,49 @@ public class TrafficLight {
     private Rectangle _roadUIImage;
     private Map<Point2D, Vehicle> _roadPoints;
 
-    public TrafficLight(Direction location, Rectangle roadUIImage) {
+    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, int greenLightDuration) {
         _vehiclesInLine = new ArrayList<>();
         // _lightImages = new Dictionary<LightState, String>();
         _roadUIImage = roadUIImage;
         _location = location;
+
+        // instead of hashmap it should be sortedmap etc because of placed order to move
         _roadPoints = new HashMap<>();
         setRoadPoints();
+        addVehiclesToLine(vehicles);
+
+        _greenLightDuration = greenLightDuration;
     }
 
     private void changeLightImage() {
 
     }
 
-    public void changeLightState() {
+    public boolean runUntilRed() {
         switch (_currentLightState) {
-            case RED -> _currentLightState = LightState.YELLOW;
-            case YELLOW -> _currentLightState = LightState.GREEN;
-            case GREEN -> _currentLightState = LightState.RED;
+            case RED -> {
+                _currentLightState = LightState.YELLOW;
+                changeLightImage();
+            }
+            case YELLOW -> {
+                // wait 3 etc. seconds
+                _currentLightState = LightState.GREEN;
+                changeLightImage();
+            }
+            case GREEN -> {
+                // wait gl duration seconds
+                _currentLightState = LightState.RED;
+                changeLightImage();
+                return true;
+            }
         }
+
+        return false;
     }
 
     //instead of making public every method, call them in constructor
 
-    public void calculateGLDuration(int totalCars, int cycleDuration) {
-        _greenLightDuration = _vehiclesInLine.size() / totalCars * cycleDuration;
-    }
-
-    public void addVehiclesToLine(Vehicle[] vehicles) {
+    private void addVehiclesToLine(Vehicle[] vehicles) {
         _vehiclesInLine.addAll(Arrays.asList(vehicles));
         placeVehiclesInsideRoad();
     }
@@ -62,8 +76,7 @@ public class TrafficLight {
             vehicle.move(roadPoint.getX(), roadPoint.getY());
             i++;
 
-            if(isHorizontal)
-            {
+            if (isHorizontal) {
                 vehicle.rotate(90);
             }
         }
