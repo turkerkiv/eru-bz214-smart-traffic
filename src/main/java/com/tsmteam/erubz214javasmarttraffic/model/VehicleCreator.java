@@ -15,10 +15,11 @@ public class VehicleCreator {
     public static Vehicle[] createVehicles(int carCount, Pane vehiclesPane) {
         Vehicle[] vehicles = new Vehicle[carCount];
         for (int i = 0; i < carCount; i++) {
-            // for now they are all static not dynamic
-            Rectangle carImage = new Rectangle(500, 500, 40, 80);
-            carImage.setFill(Color.BLACK);
+            Rectangle carImage = new Rectangle(500, 500, 20, 40);
+            carImage.setFill(Color.BLUE);
             vehiclesPane.getChildren().add(carImage);
+
+            // later add real pngs for cars
             vehicles[i] = new Vehicle("BMW", 0.75, carImage);
         }
         return vehicles;

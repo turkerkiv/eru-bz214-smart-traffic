@@ -4,8 +4,10 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.LightState;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
+import java.util.List;
 
 public class TrafficLight {
     private List<Vehicle> _vehiclesInLine;
@@ -16,14 +18,14 @@ public class TrafficLight {
 
 
     private Rectangle _roadUIImage;
-    private Point2D _roadPoints;
+    private Map<Point2D, Vehicle> _roadPoints;
 
     public TrafficLight(Direction location, Rectangle roadUIImage) {
         _vehiclesInLine = new ArrayList<>();
         // _lightImages = new Dictionary<LightState, String>();
         _roadUIImage = roadUIImage;
         _location = location;
-        _roadPoints = new Point2D.Double();
+        _roadPoints = new HashMap<>();
         setRoadPoints();
     }
 
@@ -51,14 +53,36 @@ public class TrafficLight {
     }
 
     private void placeVehiclesInsideRoad() {
-        for (Vehicle vehicle : _vehiclesInLine) {
-            // make it dictionary like roadPoints and vehicle. if a roadPoints not being used etc. then move it to that
-            vehicle.move(_roadPoints.getX(),_roadPoints.getY());
+        boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
+        int i = 0;
+        for (Point2D roadPoint : _roadPoints.keySet()) {
+            if (i == _vehiclesInLine.size()) break;
+            Vehicle vehicle = _vehiclesInLine.get(i);
+            _roadPoints.put(roadPoint, vehicle);
+            vehicle.move(roadPoint.getX(), roadPoint.getY());
+            i++;
+
+            if(isHorizontal)
+            {
+                vehicle.rotate(90);
+            }
         }
     }
 
-    private void setRoadPoints()
-    {
-        _roadPoints.setLocation(_roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2, _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2);
+    private void setRoadPoints() {
+        int offset = 50;
+        boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
+        for (int i = 1; i < 4; i++) {
+            double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
+            double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
+
+            if (isHorizontal) {
+                x = _roadUIImage.getLayoutX() + i * offset;
+            } else {
+                y = _roadUIImage.getLayoutY() + i * offset;
+            }
+
+            _roadPoints.put(new Point2D.Double(x, y), null);
+        }
     }
 }

@@ -27,6 +27,11 @@ public class Vehicle {
         _uiImage.setY(y);
     }
 
+    public void rotate(double angle)
+    {
+        _uiImage.setRotate(angle);
+    }
+
     public void changeState() {
         switch (_vehicleState) {
             case MOVING -> _vehicleState = VehicleState.WAITING;
