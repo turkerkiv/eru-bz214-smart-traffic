@@ -32,8 +32,7 @@ public class TrafficLight {
         _roadUIImage = roadUIImage;
         _location = location;
 
-        // instead of hashmap it should be sortedmap etc because of placed order to move
-        _roadPoints = new HashMap<>();
+        _roadPoints = new LinkedHashMap<>();
         setRoadPoints();
         calculateRoadEndLine();
 
@@ -147,15 +146,16 @@ public class TrafficLight {
 
     private void setRoadPoints() {
         int offset = 50;
-        boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         for (int i = 1; i < 4; i++) {
             double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
             double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
 
-            if (isHorizontal) {
-                x = _roadUIImage.getLayoutX() + i * offset;
-            } else {
-                y = _roadUIImage.getLayoutY() + i * offset;
+            switch (_location)
+            {
+                case NORTH -> y = _roadUIImage.getHeight() - i * offset;
+                case EAST -> x = _roadUIImage.getLayoutX() + i * offset;
+                case SOUTH -> y = _roadUIImage.getLayoutY() + i * offset;
+                case WEST -> x = _roadUIImage.getWidth() - i * offset;
             }
 
             _roadPoints.put(new Point2D.Double(x, y), null);
