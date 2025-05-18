@@ -60,7 +60,7 @@ public class TrafficLight {
     }
 
     public void run(double now) {
-        if(_vehiclesInLine.isEmpty()) return;
+        if (_vehiclesInLine.isEmpty()) return;
 
         switch (_currentLightState) {
             case RED -> {
@@ -108,8 +108,7 @@ public class TrafficLight {
                     _currentLightState = LightState.RED;
                     changeLightImage();
 
-                    for(Vehicle vehicle : _vehiclesInLine)
-                    {
+                    for (Vehicle vehicle : _vehiclesInLine) {
                         vehicle.changeState();
                     }
                 }
@@ -131,11 +130,12 @@ public class TrafficLight {
     private void placeVehiclesInsideRoad() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         int i = 0;
-        for (Point2D roadPoint : _roadPoints.keySet()) {
-            if (i == _vehiclesInLine.size()) break;
-            Vehicle vehicle = _vehiclesInLine.get(i);
-            _roadPoints.put(roadPoint, vehicle);
-            vehicle.teleport(roadPoint.getX(), roadPoint.getY());
+        for (Vehicle vehicle : _vehiclesInLine) {
+            if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
+            List<Point2D> points = new ArrayList<>(_roadPoints.keySet());
+            Point2D point = points.get(i);
+            _roadPoints.put(point, vehicle);
+            vehicle.teleport(point.getX(), point.getY());
             i++;
 
             if (isHorizontal) {
@@ -146,12 +146,11 @@ public class TrafficLight {
 
     private void setRoadPoints() {
         int offset = 50;
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 5; i++) {
             double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
             double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
 
-            switch (_location)
-            {
+            switch (_location) {
                 case NORTH -> y = _roadUIImage.getHeight() - i * offset;
                 case EAST -> x = _roadUIImage.getLayoutX() + i * offset;
                 case SOUTH -> y = _roadUIImage.getLayoutY() + i * offset;
