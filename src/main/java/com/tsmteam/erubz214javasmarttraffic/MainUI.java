@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import java.net.URL;
 
 public class MainUI extends Application {
-
     @Override
     public void start(Stage stage) throws Exception {
         URL fxmlLocation = MainUI.class.getResource("traffic_ui_main.fxml");

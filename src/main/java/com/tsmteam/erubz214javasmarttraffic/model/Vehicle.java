@@ -9,19 +9,28 @@ public class Vehicle {
     private double _speed;
     private Rectangle _uiImage;
     private VehicleState _vehicleState;
+    private Direction _initialLocation;
 
-    public Vehicle(String name, double speed, Rectangle uiImage) {
+    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
+        _initialLocation = initialLocation;
     }
 
-    public void move(Direction destination) {
-        _uiImage.setY(_uiImage.getY() - _speed);
+    public void move()
+    {
+        switch (_initialLocation)
+        {
+            case NORTH -> _uiImage.setY(_uiImage.getY() + _speed);
+            case EAST -> _uiImage.setX(_uiImage.getX() - _speed);
+            case SOUTH -> _uiImage.setY(_uiImage.getY() - _speed);
+            case WEST -> _uiImage.setX(_uiImage.getX() + _speed);
+        }
     }
 
-    public void move(double x, double y)
+    public void teleport(double x, double y)
     {
         _uiImage.setX(x);
         _uiImage.setY(y);

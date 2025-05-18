@@ -25,7 +25,7 @@ public class CycleManager {
 
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
-            Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane);
+            Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, Direction.values()[i]);
             double greenLightDuration = (double) vehicles.length / totalCars * CYCLE_DURATION;
             TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], vehicles, greenLightDuration);
             _trafficLights.add(light);

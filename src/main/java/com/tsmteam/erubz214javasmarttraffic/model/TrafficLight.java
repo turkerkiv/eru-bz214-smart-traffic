@@ -31,6 +31,7 @@ public class TrafficLight {
         // instead of hashmap it should be sortedmap etc because of placed order to move
         _roadPoints = new HashMap<>();
         setRoadPoints();
+
         addVehiclesToLine(vehicles);
 
         _greenLightDuration = greenLightDuration;
@@ -52,7 +53,7 @@ public class TrafficLight {
             case YELLOW -> {
                 double elapsedSecondsInYellow = (now - _lightLastChangeTime) / 1_000_000_000.0;
                 System.out.println(elapsedSecondsInYellow);
-                System.out.println("NOW YELLOW");
+                System.out.println(_location + " now yellow");
                 if(elapsedSecondsInYellow > YELLOW_DURATION)
                 {
                     _lightLastChangeTime = System.nanoTime();
@@ -62,10 +63,13 @@ public class TrafficLight {
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
-                // move vehicles right here
                 System.out.println(elapsedSecondsInGreen);
-                System.out.println("NOW GREEN");
-                if(elapsedSecondsInGreen > _greenLightDuration)
+                System.out.println(_location + " now Green");
+                for(Vehicle vehicle : _vehiclesInLine)
+                {
+                    vehicle.move();
+                }
+                if(elapsedSecondsInGreen > 5)
                 {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
@@ -92,7 +96,7 @@ public class TrafficLight {
             if (i == _vehiclesInLine.size()) break;
             Vehicle vehicle = _vehiclesInLine.get(i);
             _roadPoints.put(roadPoint, vehicle);
-            vehicle.move(roadPoint.getX(), roadPoint.getY());
+            vehicle.teleport(roadPoint.getX(), roadPoint.getY());
             i++;
 
             if (isHorizontal) {
