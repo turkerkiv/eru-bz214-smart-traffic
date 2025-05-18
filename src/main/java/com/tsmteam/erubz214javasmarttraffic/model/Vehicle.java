@@ -36,7 +36,7 @@ public class Vehicle {
     }
 
     public void rotate(double angle) {
-        _uiImage.setRotate(angle);
+        _uiImage.setRotate(_uiImage.getRotate() + angle);
     }
 
     public boolean isStillInRoad(double roadEndLine) {

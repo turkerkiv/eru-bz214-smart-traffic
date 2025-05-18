@@ -7,6 +7,9 @@ import javafx.scene.shape.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TrafficLight {
     private List<Vehicle> _vehiclesInLine;
@@ -77,8 +80,15 @@ public class TrafficLight {
                     _currentLightState = LightState.GREEN;
                     changeLightImage();
 
-                    for (Vehicle vehicle : _vehiclesInLine) {
-                        vehicle.changeState();
+                    for (int i = 0; i < _vehiclesInLine.size(); i++) {
+                        Vehicle vehicle = _vehiclesInLine.get(i);
+
+                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        Runnable task = () -> vehicle.changeState();
+                        long delay = 500 + 300L * i;
+                        scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
+
+                        scheduler.shutdown();
                     }
                     System.out.println(_location + " now green");
                 }
@@ -88,8 +98,8 @@ public class TrafficLight {
                 for (int i = 0; i < _vehiclesInLine.size(); i++) {
                     Vehicle vehicle = _vehiclesInLine.get(i);
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
+                        // vehicle.rotate(90);
                         _vehiclesInLine.remove(vehicle);
-
                         System.out.println("One vehicle left");
                         if (_vehiclesInLine.isEmpty()) break;
                     }
