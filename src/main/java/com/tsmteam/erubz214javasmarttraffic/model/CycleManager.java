@@ -10,6 +10,7 @@ import java.util.List;
 
 public class CycleManager {
     public static final double CYCLE_DURATION = 120;
+    public static final double YELLOW_DURATION = 1;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;
     private static int _currentLightIndex = 0;
@@ -27,20 +28,21 @@ public class CycleManager {
         for (int i = 0; i < carCounts.length; i++) {
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, Direction.values()[i]);
             double greenLightDuration = (double) vehicles.length / totalCars * CYCLE_DURATION;
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], vehicles, greenLightDuration);
+
+            double redLightDuration = 0;
+            for (TrafficLight light : _trafficLights) {
+                redLightDuration += light.getGLDuration() + YELLOW_DURATION;
+            }
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], vehicles, greenLightDuration, redLightDuration, YELLOW_DURATION);
             _trafficLights.add(light);
         }
     }
 
     public static void runCycle(double now) {
-        if (_currentLightIndex == _trafficLights.size())
-            return;
-
-        if (_currentLight == null) {
-            _currentLight = _trafficLights.get(_currentLightIndex);
-        } else if (_currentLight.runUntilRed(now)) {
-            _currentLight = null;
-            _currentLightIndex++;
+        // double elapsedSecondsInCycle = (now - ) / 1_000_000_000.0;
+        for(TrafficLight light : _trafficLights)
+        {
+            light.run(now);
         }
     }
 

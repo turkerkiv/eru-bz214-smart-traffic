@@ -14,16 +14,16 @@ public class TrafficLight {
     private LightState _currentLightState;
     private Dictionary<LightState, String> _lightImages;
     private Direction _location;
-    public static final double YELLOW_DURATION = 1;
     private double _roadEndLine;
-
+    private double _redLightDuration;
+    private double _yellowLightDuration;
 
     private Rectangle _roadUIImage;
     private Map<Point2D, Vehicle> _roadPoints;
 
     private double _lightLastChangeTime;
 
-    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, double greenLightDuration) {
+    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, double greenLightDuration, double redLightDuration, double yellowLightDuration) {
         _vehiclesInLine = new ArrayList<>();
         // _lightImages = new Dictionary<LightState, String>();
         _roadUIImage = roadUIImage;
@@ -36,8 +36,11 @@ public class TrafficLight {
 
         addVehiclesToLine(vehicles);
 
-        _greenLightDuration = greenLightDuration;
+        _greenLightDuration = 5;
+        _redLightDuration = redLightDuration;
+        _yellowLightDuration = yellowLightDuration;
 
+        _lightLastChangeTime = System.nanoTime();
         _currentLightState = LightState.RED;
     }
 
@@ -54,26 +57,30 @@ public class TrafficLight {
         }
     }
 
-    public boolean runUntilRed(double now) {
+    public void run(double now) {
+        if(_vehiclesInLine.isEmpty()) return;
+
         switch (_currentLightState) {
             case RED -> {
-                _currentLightState = LightState.YELLOW;
-                _lightLastChangeTime = System.nanoTime();
-                changeLightImage();
+                double elapsedSecondsInRed = (now - _lightLastChangeTime) / 1_000_000_000.0;
+                if (elapsedSecondsInRed > _redLightDuration) {
+                    _currentLightState = LightState.YELLOW;
+                    _lightLastChangeTime = System.nanoTime();
+                    changeLightImage();
+                    System.out.println(_location + " now yellow");
+                }
             }
             case YELLOW -> {
                 double elapsedSecondsInYellow = (now - _lightLastChangeTime) / 1_000_000_000.0;
-                System.out.println(elapsedSecondsInYellow);
-                System.out.println(_location + " now yellow");
-                if (elapsedSecondsInYellow > YELLOW_DURATION) {
+                if (elapsedSecondsInYellow > _yellowLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.GREEN;
                     changeLightImage();
 
-                    for(int i = 0; i < _vehiclesInLine.size(); i++)
-                    {
+                    for (int i = 0; i < _vehiclesInLine.size(); i++) {
                         _vehiclesInLine.get(i).changeState();
                     }
+                    System.out.println(_location + " now green");
                 }
             }
             case GREEN -> {
@@ -83,19 +90,20 @@ public class TrafficLight {
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
                         _vehiclesInLine.remove(vehicle);
                         System.out.println("One vehicle left");
-                        if(_vehiclesInLine.isEmpty()) break;
+                        if (_vehiclesInLine.isEmpty()) break;
                     }
                 }
-                if (elapsedSecondsInGreen > 5) {
+                if (elapsedSecondsInGreen > _greenLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
                     changeLightImage();
-                    return true;
                 }
             }
         }
+    }
 
-        return false;
+    public double getGLDuration() {
+        return _greenLightDuration;
     }
 
     //instead of making public every method, call them in constructor
