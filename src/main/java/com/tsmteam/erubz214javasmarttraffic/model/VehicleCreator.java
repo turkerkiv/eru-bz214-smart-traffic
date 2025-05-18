@@ -19,7 +19,7 @@ public class VehicleCreator {
             carImage.setFill(Color.BLUE);
             vehiclesPane.getChildren().add(carImage);
 
-            double speed = 0.5 + Math.random() * 0.10;
+            double speed = 0.5 + Math.random() * 0.05;
             // later add real pngs for cars
             vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation);
         }

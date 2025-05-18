@@ -19,26 +19,43 @@ public class Vehicle {
         _initialLocation = initialLocation;
     }
 
-    public void move()
-    {
-        switch (_initialLocation)
-        {
-            case NORTH -> _uiImage.setY(_uiImage.getY() + _speed);
-            case EAST -> _uiImage.setX(_uiImage.getX() - _speed);
-            case SOUTH -> _uiImage.setY(_uiImage.getY() - _speed);
-            case WEST -> _uiImage.setX(_uiImage.getX() + _speed);
+    public void runCycle() {
+        if (_vehicleState == VehicleState.MOVING) {
+            switch (_initialLocation) {
+                case NORTH -> _uiImage.setY(_uiImage.getY() + _speed);
+                case EAST -> _uiImage.setX(_uiImage.getX() - _speed);
+                case SOUTH -> _uiImage.setY(_uiImage.getY() - _speed);
+                case WEST -> _uiImage.setX(_uiImage.getX() + _speed);
+            }
         }
     }
 
-    public void teleport(double x, double y)
-    {
+    public void teleport(double x, double y) {
         _uiImage.setX(x);
         _uiImage.setY(y);
     }
 
-    public void rotate(double angle)
-    {
+    public void rotate(double angle) {
         _uiImage.setRotate(angle);
+    }
+
+    public boolean isStillInRoad(double roadEndLine) {
+        runCycle();
+        switch (_initialLocation) {
+            case NORTH -> {
+                return _uiImage.getY() < roadEndLine;
+            }
+            case EAST -> {
+                return _uiImage.getX() > roadEndLine;
+            }
+            case SOUTH -> {
+                return _uiImage.getY() > roadEndLine;
+            }
+            case WEST -> {
+                return _uiImage.getX() < roadEndLine;
+            }
+        }
+        return false;
     }
 
     public void changeState() {

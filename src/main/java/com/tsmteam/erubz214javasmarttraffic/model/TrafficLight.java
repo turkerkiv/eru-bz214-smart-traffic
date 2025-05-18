@@ -15,6 +15,7 @@ public class TrafficLight {
     private Dictionary<LightState, String> _lightImages;
     private Direction _location;
     public static final double YELLOW_DURATION = 1;
+    private double _roadEndLine;
 
 
     private Rectangle _roadUIImage;
@@ -31,6 +32,7 @@ public class TrafficLight {
         // instead of hashmap it should be sortedmap etc because of placed order to move
         _roadPoints = new HashMap<>();
         setRoadPoints();
+        calculateRoadEndLine();
 
         addVehiclesToLine(vehicles);
 
@@ -41,6 +43,15 @@ public class TrafficLight {
 
     private void changeLightImage() {
 
+    }
+
+    private void calculateRoadEndLine() {
+        switch (_location) {
+            case NORTH -> _roadEndLine = _roadUIImage.getHeight();
+            case EAST -> _roadEndLine = _roadUIImage.getLayoutX();
+            case SOUTH -> _roadEndLine = _roadUIImage.getLayoutY();
+            case WEST -> _roadEndLine = _roadUIImage.getWidth();
+        }
     }
 
     public boolean runUntilRed(double now) {
@@ -54,23 +65,28 @@ public class TrafficLight {
                 double elapsedSecondsInYellow = (now - _lightLastChangeTime) / 1_000_000_000.0;
                 System.out.println(elapsedSecondsInYellow);
                 System.out.println(_location + " now yellow");
-                if(elapsedSecondsInYellow > YELLOW_DURATION)
-                {
+                if (elapsedSecondsInYellow > YELLOW_DURATION) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.GREEN;
                     changeLightImage();
+
+                    for(int i = 0; i < _vehiclesInLine.size(); i++)
+                    {
+                        _vehiclesInLine.get(i).changeState();
+                    }
                 }
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
-                System.out.println(elapsedSecondsInGreen);
-                System.out.println(_location + " now Green");
-                for(Vehicle vehicle : _vehiclesInLine)
-                {
-                    vehicle.move();
+                for (int i = 0; i < _vehiclesInLine.size(); i++) {
+                    Vehicle vehicle = _vehiclesInLine.get(i);
+                    if (!vehicle.isStillInRoad(_roadEndLine)) {
+                        _vehiclesInLine.remove(vehicle);
+                        System.out.println("One vehicle left");
+                        if(_vehiclesInLine.isEmpty()) break;
+                    }
                 }
-                if(elapsedSecondsInGreen > 5)
-                {
+                if (elapsedSecondsInGreen > 5) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
                     changeLightImage();
