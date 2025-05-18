@@ -4,6 +4,7 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.LightState;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
@@ -28,22 +29,24 @@ public class TrafficLight {
 
     public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, double greenLightDuration, double redLightDuration, double yellowLightDuration) {
         _vehiclesInLine = new ArrayList<>();
-        // _lightImages = new Dictionary<LightState, String>();
+        _roadPoints = new LinkedHashMap<>();
+        _vehiclesInLine.addAll(Arrays.asList(vehicles));
         _roadUIImage = roadUIImage;
         _location = location;
+        _currentLightState = LightState.RED;
+        _lightLastChangeTime = System.nanoTime();
 
-        _roadPoints = new LinkedHashMap<>();
-        setRoadPoints();
-        calculateRoadEndLine();
-
-        addVehiclesToLine(vehicles);
-
-        _greenLightDuration = 5;
+        _greenLightDuration = greenLightDuration;
         _redLightDuration = redLightDuration;
         _yellowLightDuration = yellowLightDuration;
+        System.out.println("Green light of " + _location + " " + _greenLightDuration);
+        System.out.println("Red light of " + _location + " " + _redLightDuration);
 
-        _lightLastChangeTime = System.nanoTime();
-        _currentLightState = LightState.RED;
+        setRoadPoints();
+        placeVehiclesInsideRoad();
+        calculateRoadEndLine();
+
+        // _lightImages = new Dictionary<LightState, String>();
     }
 
     private void changeLightImage() {
@@ -122,20 +125,14 @@ public class TrafficLight {
 
     //instead of making public every method, call them in constructor
 
-    private void addVehiclesToLine(Vehicle[] vehicles) {
-        _vehiclesInLine.addAll(Arrays.asList(vehicles));
-        placeVehiclesInsideRoad();
-    }
-
     private void placeVehiclesInsideRoad() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         int i = 0;
-        for (Vehicle vehicle : _vehiclesInLine) {
-            if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
-            List<Point2D> points = new ArrayList<>(_roadPoints.keySet());
-            Point2D point = points.get(i);
-            _roadPoints.put(point, vehicle);
+        for (Point2D point : _roadPoints.keySet()) {
+            // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
+            Vehicle vehicle = _vehiclesInLine.get(i);
             vehicle.teleport(point.getX(), point.getY());
+            _roadPoints.put(point, vehicle);
             i++;
 
             if (isHorizontal) {
@@ -145,16 +142,29 @@ public class TrafficLight {
     }
 
     private void setRoadPoints() {
-        int offset = 50;
-        for (int i = 1; i < 5; i++) {
+        int carsOffset = 50;
+        int rightLineOffset = 40;
+        for (int i = 1; i < _vehiclesInLine.size() + 1; i++) {
             double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
             double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
 
             switch (_location) {
-                case NORTH -> y = _roadUIImage.getHeight() - i * offset;
-                case EAST -> x = _roadUIImage.getLayoutX() + i * offset;
-                case SOUTH -> y = _roadUIImage.getLayoutY() + i * offset;
-                case WEST -> x = _roadUIImage.getWidth() - i * offset;
+                case NORTH -> {
+                    y = _roadUIImage.getHeight() - i * carsOffset;
+                    x -= rightLineOffset;
+                }
+                case EAST -> {
+                    x = _roadUIImage.getLayoutX() + i * carsOffset;
+                    y -= rightLineOffset;
+                }
+                case SOUTH -> {
+                    y = _roadUIImage.getLayoutY() + i * carsOffset;
+                    x += rightLineOffset - 25;
+                }
+                case WEST -> {
+                    x = _roadUIImage.getWidth() - i * carsOffset;
+                    y += rightLineOffset - 35;
+                }
             }
 
             _roadPoints.put(new Point2D.Double(x, y), null);

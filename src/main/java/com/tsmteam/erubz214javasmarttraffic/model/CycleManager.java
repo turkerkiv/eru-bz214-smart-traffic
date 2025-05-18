@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CycleManager {
-    public static final double CYCLE_DURATION = 120;
+    public static final double CYCLE_DURATION = 40;
     public static final double YELLOW_DURATION = 1;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;
@@ -41,15 +41,14 @@ public class CycleManager {
         }
     }
 
-    public static void runCycle(double now) {
+    public static void runCycle(double now, double deltaTime) {
         // double elapsedSecondsInCycle = (now - ) / 1_000_000_000.0;
-        for(TrafficLight light : _trafficLights)
-        {
+        for (TrafficLight light : _trafficLights) {
             light.run(now);
         }
-        for(Vehicle vehicle : _allVehicles)
-        {
-            vehicle.run();
+
+        for (Vehicle vehicle : _allVehicles) {
+            vehicle.run(deltaTime);
         }
     }
 

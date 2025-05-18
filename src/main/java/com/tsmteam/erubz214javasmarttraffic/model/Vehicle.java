@@ -19,13 +19,14 @@ public class Vehicle {
         _initialLocation = initialLocation;
     }
 
-    public void run() {
+    public void run(double deltaTime) {
         if (_vehicleState == VehicleState.MOVING) {
+            double distance = _speed * deltaTime;
             switch (_initialLocation) {
-                case NORTH -> _uiImage.setY(_uiImage.getY() + _speed);
-                case EAST -> _uiImage.setX(_uiImage.getX() - _speed);
-                case SOUTH -> _uiImage.setY(_uiImage.getY() - _speed);
-                case WEST -> _uiImage.setX(_uiImage.getX() + _speed);
+                case NORTH -> _uiImage.setY(_uiImage.getY() + distance);
+                case EAST -> _uiImage.setX(_uiImage.getX() - distance);
+                case SOUTH -> _uiImage.setY(_uiImage.getY() - distance);
+                case WEST -> _uiImage.setX(_uiImage.getX() + distance);
             }
         }
     }
