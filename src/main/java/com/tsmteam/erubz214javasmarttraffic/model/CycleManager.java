@@ -15,6 +15,8 @@ public class CycleManager {
     private static TrafficLight _currentLight;
     private static int _currentLightIndex = 0;
 
+    private static List<Vehicle> _allVehicles = new ArrayList<>();
+
     // there will be one background images pane, one lights pane, one cars pane
 
     public CycleManager() {
@@ -27,6 +29,7 @@ public class CycleManager {
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, Direction.values()[i]);
+            _allVehicles.addAll(Arrays.asList(vehicles));
             double greenLightDuration = (double) vehicles.length / totalCars * CYCLE_DURATION;
 
             double redLightDuration = 0;
@@ -43,6 +46,10 @@ public class CycleManager {
         for(TrafficLight light : _trafficLights)
         {
             light.run(now);
+        }
+        for(Vehicle vehicle : _allVehicles)
+        {
+            vehicle.run();
         }
     }
 

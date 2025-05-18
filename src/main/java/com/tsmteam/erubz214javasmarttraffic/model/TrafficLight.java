@@ -77,8 +77,8 @@ public class TrafficLight {
                     _currentLightState = LightState.GREEN;
                     changeLightImage();
 
-                    for (int i = 0; i < _vehiclesInLine.size(); i++) {
-                        _vehiclesInLine.get(i).changeState();
+                    for (Vehicle vehicle : _vehiclesInLine) {
+                        vehicle.changeState();
                     }
                     System.out.println(_location + " now green");
                 }
@@ -89,6 +89,7 @@ public class TrafficLight {
                     Vehicle vehicle = _vehiclesInLine.get(i);
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
                         _vehiclesInLine.remove(vehicle);
+
                         System.out.println("One vehicle left");
                         if (_vehiclesInLine.isEmpty()) break;
                     }
@@ -97,6 +98,11 @@ public class TrafficLight {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
                     changeLightImage();
+
+                    for(Vehicle vehicle : _vehiclesInLine)
+                    {
+                        vehicle.changeState();
+                    }
                 }
             }
         }

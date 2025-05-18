@@ -19,7 +19,7 @@ public class Vehicle {
         _initialLocation = initialLocation;
     }
 
-    public void runCycle() {
+    public void run() {
         if (_vehicleState == VehicleState.MOVING) {
             switch (_initialLocation) {
                 case NORTH -> _uiImage.setY(_uiImage.getY() + _speed);
@@ -40,7 +40,6 @@ public class Vehicle {
     }
 
     public boolean isStillInRoad(double roadEndLine) {
-        runCycle();
         switch (_initialLocation) {
             case NORTH -> {
                 return _uiImage.getY() < roadEndLine;
