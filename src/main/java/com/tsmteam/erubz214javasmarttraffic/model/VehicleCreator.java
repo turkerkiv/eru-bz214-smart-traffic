@@ -7,9 +7,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Dictionary;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class VehicleCreator {
     public static Vehicle[] createVehicles(int carCount, Pane vehiclesPane, Direction initialLocation) {
@@ -20,8 +20,15 @@ public class VehicleCreator {
             vehiclesPane.getChildren().add(carImage);
 
             double speed = 135 + Math.random() * 5;
-            // later add real pngs for cars
-            vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation);
+
+            // selecting random destination for car
+            Stream<Direction> filteredDirections = Arrays.stream(Direction.values()).filter(x -> x != initialLocation);
+            Direction[] directions = filteredDirections.toArray(Direction[]::new);
+            Random rnd = new Random();
+            int randomIndex = rnd.nextInt(0, directions.length);
+            Direction destination = directions[randomIndex];
+
+            vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation, destination);
         }
         return vehicles;
     }

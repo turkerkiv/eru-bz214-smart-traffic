@@ -10,13 +10,15 @@ public class Vehicle {
     private Rectangle _uiImage;
     private VehicleState _vehicleState;
     private Direction _initialLocation;
+    private Direction _destination;
 
-    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation) {
+    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation, Direction destination) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
         _initialLocation = initialLocation;
+        _destination = destination;
     }
 
     public void run(double deltaTime) {
@@ -36,7 +38,26 @@ public class Vehicle {
         _uiImage.setY(y);
     }
 
-    public void rotate(double angle) {
+    public void turn() {
+        // deciding whether to rotate image or not
+        boolean shouldRotateImage = true;
+        if ((_initialLocation == Direction.NORTH || _initialLocation == Direction.SOUTH) && (_destination == Direction.NORTH || _destination == Direction.SOUTH))
+            shouldRotateImage = false;
+        else if ((_initialLocation == Direction.EAST || _initialLocation == Direction.WEST) && (_destination == Direction.EAST || _destination == Direction.WEST))
+            shouldRotateImage = false;
+        if (shouldRotateImage)
+            rotateImage(90);
+
+        // changing initialLocation because moving depends on it
+        switch (_destination) {
+            case NORTH -> _initialLocation = Direction.SOUTH;
+            case EAST -> _initialLocation = Direction.WEST;
+            case SOUTH -> _initialLocation = Direction.NORTH;
+            case WEST -> _initialLocation = Direction.EAST;
+        }
+    }
+
+    public void rotateImage(double angle) {
         _uiImage.setRotate(_uiImage.getRotate() + angle);
     }
 

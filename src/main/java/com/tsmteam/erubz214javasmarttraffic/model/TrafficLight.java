@@ -4,7 +4,6 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.LightState;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
@@ -100,7 +99,8 @@ public class TrafficLight {
                 for (int i = 0; i < _vehiclesInLine.size(); i++) {
                     Vehicle vehicle = _vehiclesInLine.get(i);
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
-                        // vehicle.rotate(90);
+
+                        vehicle.turn();
                         _vehiclesInLine.remove(vehicle);
                         System.out.println("One vehicle left");
                         if (_vehiclesInLine.isEmpty()) break;
@@ -136,7 +136,7 @@ public class TrafficLight {
             i++;
 
             if (isHorizontal) {
-                vehicle.rotate(90);
+                vehicle.rotateImage(90);
             }
         }
     }
