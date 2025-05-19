@@ -20,16 +20,19 @@ public class TrafficLight {
     private double _roadEndLine;
     private double _redLightDuration;
     private double _yellowLightDuration;
+    private double _roadRightLine;
+    private double _roadLeftLine;
+
+    // TODO can be refactored to seperate road logic and traffic light logic and also maybe road holds its traffic light, road holds vehicles and traffic light only calculates duration etc.
 
     private Rectangle _roadUIImage;
     private Map<Point2D, Vehicle> _roadPoints;
 
     private double _lightLastChangeTime;
 
-    public TrafficLight(Direction location, Rectangle roadUIImage, Vehicle[] vehicles, double greenLightDuration, double redLightDuration, double yellowLightDuration) {
+    public TrafficLight(Direction location, Rectangle roadUIImage, double greenLightDuration, double redLightDuration, double yellowLightDuration) {
         _vehiclesInLine = new ArrayList<>();
         _roadPoints = new LinkedHashMap<>();
-        _vehiclesInLine.addAll(Arrays.asList(vehicles));
         _roadUIImage = roadUIImage;
         _location = location;
         _currentLightState = LightState.RED;
@@ -41,8 +44,7 @@ public class TrafficLight {
         System.out.println("Green light of " + _location + " " + _greenLightDuration);
         System.out.println("Red light of " + _location + " " + _redLightDuration);
 
-        setRoadPoints();
-        placeVehiclesInsideRoad();
+        calculateRightAndLeftLine();
         calculateRoadEndLine();
 
         // _lightImages = new Dictionary<LightState, String>();
@@ -59,6 +61,13 @@ public class TrafficLight {
             case SOUTH -> _roadEndLine = _roadUIImage.getLayoutY();
             case WEST -> _roadEndLine = _roadUIImage.getWidth();
         }
+    }
+
+    public void addVehiclesToRoad(Vehicle[] vehicles)
+    {
+        _vehiclesInLine.addAll(Arrays.asList(vehicles));
+        setVehicleSpawnPoints();
+        spawnVehicles();
     }
 
     public void run(double now) {
@@ -99,8 +108,6 @@ public class TrafficLight {
                 for (int i = 0; i < _vehiclesInLine.size(); i++) {
                     Vehicle vehicle = _vehiclesInLine.get(i);
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
-
-                        vehicle.turn();
                         _vehiclesInLine.remove(vehicle);
                         System.out.println("One vehicle left");
                         if (_vehiclesInLine.isEmpty()) break;
@@ -123,9 +130,15 @@ public class TrafficLight {
         return _greenLightDuration;
     }
 
-    //instead of making public every method, call them in constructor
+    public double getRoadLeftLine() {
+        return _roadLeftLine;
+    }
 
-    private void placeVehiclesInsideRoad() {
+    public Direction getLocation() {
+            return _location;
+    }
+
+    private void spawnVehicles() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         int i = 0;
         for (Point2D point : _roadPoints.keySet()) {
@@ -141,9 +154,33 @@ public class TrafficLight {
         }
     }
 
-    private void setRoadPoints() {
+    private void calculateRightAndLeftLine() {
+        double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
+        double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
+        int middleOffset = 40;
+        switch (_location) {
+            case NORTH -> {
+                _roadRightLine = x - middleOffset;
+                _roadLeftLine = x + middleOffset;
+            }
+            case EAST -> {
+                _roadRightLine = y - middleOffset;
+                _roadLeftLine = y + middleOffset;
+            }
+            case SOUTH -> {
+                _roadRightLine = x + middleOffset - 25;
+                _roadLeftLine = x - middleOffset + 25;
+            }
+            case WEST -> {
+                _roadRightLine = y + middleOffset - 35;
+                _roadLeftLine = y - middleOffset + 35;
+            }
+
+        }
+    }
+
+    private void setVehicleSpawnPoints() {
         int carsOffset = 50;
-        int rightLineOffset = 40;
         for (int i = 1; i < _vehiclesInLine.size() + 1; i++) {
             double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;
             double y = _roadUIImage.getLayoutY() + _roadUIImage.getHeight() / 2;
@@ -151,19 +188,19 @@ public class TrafficLight {
             switch (_location) {
                 case NORTH -> {
                     y = _roadUIImage.getHeight() - i * carsOffset;
-                    x -= rightLineOffset;
+                    x = _roadRightLine;
                 }
                 case EAST -> {
                     x = _roadUIImage.getLayoutX() + i * carsOffset;
-                    y -= rightLineOffset;
+                    y = _roadRightLine;
                 }
                 case SOUTH -> {
                     y = _roadUIImage.getLayoutY() + i * carsOffset;
-                    x += rightLineOffset - 25;
+                    x = _roadRightLine;
                 }
                 case WEST -> {
                     x = _roadUIImage.getWidth() - i * carsOffset;
-                    y += rightLineOffset - 35;
+                    y = _roadRightLine;
                 }
             }
 

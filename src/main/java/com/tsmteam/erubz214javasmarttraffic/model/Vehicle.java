@@ -9,15 +9,18 @@ public class Vehicle {
     private double _speed;
     private Rectangle _uiImage;
     private VehicleState _vehicleState;
+    private TrafficLight _connectedTrafficLight;
+    private TrafficLight _destination;
     private Direction _initialLocation;
-    private Direction _destination;
+    private boolean _didTurn = false;
 
-    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation, Direction destination) {
+    public Vehicle(String name, double speed, Rectangle uiImage, TrafficLight connectedTrafficLight, TrafficLight destination) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
-        _initialLocation = initialLocation;
+        _connectedTrafficLight = connectedTrafficLight;
+        _initialLocation = connectedTrafficLight.getLocation();
         _destination = destination;
     }
 
@@ -25,10 +28,30 @@ public class Vehicle {
         if (_vehicleState == VehicleState.MOVING) {
             double distance = _speed * deltaTime;
             switch (_initialLocation) {
-                case NORTH -> _uiImage.setY(_uiImage.getY() + distance);
-                case EAST -> _uiImage.setX(_uiImage.getX() - distance);
-                case SOUTH -> _uiImage.setY(_uiImage.getY() - distance);
-                case WEST -> _uiImage.setX(_uiImage.getX() + distance);
+                case NORTH -> {
+                    double newY = _uiImage.getY() + distance;
+                    _uiImage.setY(newY);
+                    if (!_didTurn && newY > _destination.getRoadLeftLine() - 35)
+                        turn();
+                }
+                case EAST -> {
+                    double newX = _uiImage.getX() - distance;
+                    _uiImage.setX(newX);
+                    if (!_didTurn && newX < _destination.getRoadLeftLine() - 20)
+                        turn();
+                }
+                case SOUTH -> {
+                    double newY = _uiImage.getY() - distance;
+                    _uiImage.setY(newY);
+                    if (!_didTurn && newY < _destination.getRoadLeftLine() - 35)
+                        turn();
+                }
+                case WEST -> {
+                    double newX = _uiImage.getX() + distance;
+                    _uiImage.setX(newX);
+                    if (!_didTurn && newX > _destination.getRoadLeftLine() - 20)
+                        turn();
+                }
             }
         }
     }
@@ -39,17 +62,19 @@ public class Vehicle {
     }
 
     public void turn() {
+        _didTurn = true;
+
         // deciding whether to rotate image or not
         boolean shouldRotateImage = true;
-        if ((_initialLocation == Direction.NORTH || _initialLocation == Direction.SOUTH) && (_destination == Direction.NORTH || _destination == Direction.SOUTH))
+        if ((_initialLocation == Direction.NORTH || _initialLocation == Direction.SOUTH) && (_destination.getLocation() == Direction.NORTH || _destination.getLocation() == Direction.SOUTH))
             shouldRotateImage = false;
-        else if ((_initialLocation == Direction.EAST || _initialLocation == Direction.WEST) && (_destination == Direction.EAST || _destination == Direction.WEST))
+        else if ((_initialLocation == Direction.EAST || _initialLocation == Direction.WEST) && (_destination.getLocation() == Direction.EAST || _destination.getLocation() == Direction.WEST))
             shouldRotateImage = false;
         if (shouldRotateImage)
             rotateImage(90);
 
         // changing initialLocation because moving depends on it
-        switch (_destination) {
+        switch (_destination.getLocation()) {
             case NORTH -> _initialLocation = Direction.SOUTH;
             case EAST -> _initialLocation = Direction.WEST;
             case SOUTH -> _initialLocation = Direction.NORTH;

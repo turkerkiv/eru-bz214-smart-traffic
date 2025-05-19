@@ -7,6 +7,8 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 public class CycleManager {
     public static final double CYCLE_DURATION = 40;
@@ -28,16 +30,21 @@ public class CycleManager {
 
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
-            Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, Direction.values()[i]);
-            _allVehicles.addAll(Arrays.asList(vehicles));
-            double greenLightDuration = (double) vehicles.length / totalCars * CYCLE_DURATION;
-
             double redLightDuration = 0;
+            double greenLightDuration = (double) carCounts[i] / totalCars * CYCLE_DURATION;
             for (TrafficLight light : _trafficLights) {
                 redLightDuration += light.getGLDuration() + YELLOW_DURATION;
             }
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], vehicles, greenLightDuration, redLightDuration, YELLOW_DURATION);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], greenLightDuration, redLightDuration, YELLOW_DURATION);
             _trafficLights.add(light);
+        }
+
+        for(int i = 0; i < carCounts.length; i++)
+        {
+            TrafficLight light = _trafficLights.get(i);
+            Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
+            _allVehicles.addAll(Arrays.asList(vehicles));
+            light.addVehiclesToRoad(vehicles);
         }
     }
 
@@ -50,6 +57,14 @@ public class CycleManager {
         for (Vehicle vehicle : _allVehicles) {
             vehicle.run(deltaTime);
         }
+    }
+
+    public static TrafficLight getRandomDestination(TrafficLight initialLocation)
+    {
+        List<TrafficLight> filteredLights = _trafficLights.stream().filter(x -> x.getLocation() != initialLocation.getLocation()).toList();
+        Random rnd = new Random();
+        int randomIndex = rnd.nextInt(0, filteredLights.size());
+        return filteredLights.get(randomIndex);
     }
 
     public static void pauseCycle() {
