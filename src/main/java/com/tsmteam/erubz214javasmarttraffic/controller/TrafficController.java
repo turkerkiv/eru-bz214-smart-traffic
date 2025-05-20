@@ -23,7 +23,7 @@ public class TrafficController {
     private Pane lightsPane;
 
     public void initialize() {
-        CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, new int[]{15, 10, 12, 5}, carsPane);
+        CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, new int[]{20, 25, 20, 15}, carsPane);
         AnimationLoop animationLoop = new AnimationLoop();
         animationLoop.start();
     }

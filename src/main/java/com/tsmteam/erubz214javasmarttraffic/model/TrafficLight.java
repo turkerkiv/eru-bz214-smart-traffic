@@ -12,6 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TrafficLight {
+    public static final double YELLOW_DURATION = 1;
     private List<Vehicle> _vehiclesInLine;
     private double _greenLightDuration;
     private LightState _currentLightState;
@@ -30,19 +31,13 @@ public class TrafficLight {
 
     private double _lightLastChangeTime;
 
-    public TrafficLight(Direction location, Rectangle roadUIImage, double greenLightDuration, double redLightDuration, double yellowLightDuration) {
+    public TrafficLight(Direction location, Rectangle roadUIImage) {
         _vehiclesInLine = new ArrayList<>();
         _roadPoints = new LinkedHashMap<>();
         _roadUIImage = roadUIImage;
         _location = location;
         _currentLightState = LightState.RED;
         _lightLastChangeTime = System.nanoTime();
-
-        _greenLightDuration = greenLightDuration;
-        _redLightDuration = redLightDuration;
-        _yellowLightDuration = yellowLightDuration;
-        System.out.println("Green light of " + _location + " " + _greenLightDuration);
-        System.out.println("Red light of " + _location + " " + _redLightDuration);
 
         calculateRightAndLeftLine();
         calculateRoadEndLine();
@@ -63,11 +58,10 @@ public class TrafficLight {
         }
     }
 
-    public void addVehiclesToRoad(Vehicle[] vehicles)
-    {
+    public void addVehiclesToRoad(Vehicle[] vehicles) {
         _vehiclesInLine.addAll(Arrays.asList(vehicles));
         setVehicleSpawnPoints();
-        spawnVehicles();
+        placeVehiclesToPoints();
     }
 
     public void run(double now) {
@@ -121,9 +115,28 @@ public class TrafficLight {
                     for (Vehicle vehicle : _vehiclesInLine) {
                         vehicle.changeState();
                     }
+
+                    setVehicleSpawnPoints();
+                    placeVehiclesToPoints();
+                    //TODO in here we must calculate this traffic light's red and green light again by accessing other traffic light's durations and calculating them
                 }
             }
         }
+    }
+
+    public void calculateGreenLightDuration(double cycleDuration, int totalCars) {
+        _greenLightDuration = (double) _vehiclesInLine.size() / totalCars * cycleDuration;
+        System.out.println(_location + " location has green : " + _greenLightDuration);
+    }
+
+    public void calculateRedLightDuration(List<Double> greenLights) {
+        for (double d : greenLights) {
+            _redLightDuration += d;
+            if (d > 0)
+                _redLightDuration += YELLOW_DURATION;
+        }
+
+        System.out.println(_location + " location has red: " + _redLightDuration);
     }
 
     public double getGLDuration() {
@@ -135,14 +148,18 @@ public class TrafficLight {
     }
 
     public Direction getLocation() {
-            return _location;
+        return _location;
     }
 
-    private void spawnVehicles() {
+    private void placeVehiclesToPoints() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         int i = 0;
+        System.out.println("wqfeflpwöflwe" + _roadPoints.keySet().size());
+        System.out.println("fwkmgkwr " + _vehiclesInLine.size());
         for (Point2D point : _roadPoints.keySet()) {
             // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
+            // TODO here gives error at the second cycle
+            // TODO run the game until all cars gone
             Vehicle vehicle = _vehiclesInLine.get(i);
             vehicle.teleport(point.getX(), point.getY());
             _roadPoints.put(point, vehicle);
@@ -180,6 +197,7 @@ public class TrafficLight {
     }
 
     private void setVehicleSpawnPoints() {
+        _roadPoints.clear();
         int carsOffset = 50;
         for (int i = 1; i < _vehiclesInLine.size() + 1; i++) {
             double x = _roadUIImage.getLayoutX() + _roadUIImage.getWidth() / 2;

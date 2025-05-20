@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 public class CycleManager {
     public static final double CYCLE_DURATION = 40;
-    public static final double YELLOW_DURATION = 1;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;
     private static int _currentLightIndex = 0;
@@ -30,12 +29,7 @@ public class CycleManager {
 
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
-            double redLightDuration = 0;
-            double greenLightDuration = (double) carCounts[i] / totalCars * CYCLE_DURATION;
-            for (TrafficLight light : _trafficLights) {
-                redLightDuration += light.getGLDuration() + YELLOW_DURATION;
-            }
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], greenLightDuration, redLightDuration, YELLOW_DURATION);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
             _trafficLights.add(light);
         }
 
@@ -45,6 +39,10 @@ public class CycleManager {
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
             _allVehicles.addAll(Arrays.asList(vehicles));
             light.addVehiclesToRoad(vehicles);
+
+            List<TrafficLight> filteredTrafficLights = _trafficLights.stream().filter(x -> x != light).toList();
+            light.calculateGreenLightDuration(CYCLE_DURATION, totalCars);
+            light.calculateRedLightDuration(filteredTrafficLights.stream().map(x -> x.getGLDuration()).toList());
         }
     }
 
