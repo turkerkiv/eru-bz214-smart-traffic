@@ -84,6 +84,7 @@ public class TrafficLight {
                     _currentLightState = LightState.GREEN;
                     changeLightImage();
 
+                    // makes vehicles change state to MOVING
                     for (int i = 0; i < _vehiclesInLine.size(); i++) {
                         Vehicle vehicle = _vehiclesInLine.get(i);
 
@@ -99,6 +100,7 @@ public class TrafficLight {
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
+                //checks if vehicles are still in road
                 for (int i = 0; i < _vehiclesInLine.size(); i++) {
                     Vehicle vehicle = _vehiclesInLine.get(i);
                     if (!vehicle.isStillInRoad(_roadEndLine)) {
@@ -116,6 +118,7 @@ public class TrafficLight {
                         vehicle.changeState();
                     }
 
+                    //TODO arabalar niye geri yerine gidiyo ki gitmesin olduğu yerde kalsın?
                     setVehicleSpawnPoints();
                     placeVehiclesToPoints();
                     //TODO in here we must calculate this traffic light's red and green light again by accessing other traffic light's durations and calculating them
@@ -154,11 +157,8 @@ public class TrafficLight {
     private void placeVehiclesToPoints() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
         int i = 0;
-        System.out.println("wqfeflpwöflwe" + _roadPoints.keySet().size());
-        System.out.println("fwkmgkwr " + _vehiclesInLine.size());
         for (Point2D point : _roadPoints.keySet()) {
             // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
-            // TODO here gives error at the second cycle
             // TODO run the game until all cars gone
             Vehicle vehicle = _vehiclesInLine.get(i);
             vehicle.teleport(point.getX(), point.getY());

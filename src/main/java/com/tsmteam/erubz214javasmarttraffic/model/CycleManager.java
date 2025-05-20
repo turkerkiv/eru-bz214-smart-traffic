@@ -27,12 +27,14 @@ public class CycleManager {
         // lets say right now carCounts in shape of [north, east, south, west]
         // absolutely change the signature of this method to make it more readable
 
+        // creates 4 lights
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
             TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
             _trafficLights.add(light);
         }
 
+        // creates vehicles
         for(int i = 0; i < carCounts.length; i++)
         {
             TrafficLight light = _trafficLights.get(i);
@@ -40,8 +42,8 @@ public class CycleManager {
             _allVehicles.addAll(Arrays.asList(vehicles));
             light.addVehiclesToRoad(vehicles);
 
-            List<TrafficLight> filteredTrafficLights = _trafficLights.stream().filter(x -> x != light).toList();
             light.calculateGreenLightDuration(CYCLE_DURATION, totalCars);
+            List<TrafficLight> filteredTrafficLights = _trafficLights.stream().filter(x -> x != light).toList();
             light.calculateRedLightDuration(filteredTrafficLights.stream().map(x -> x.getGLDuration()).toList());
         }
     }
