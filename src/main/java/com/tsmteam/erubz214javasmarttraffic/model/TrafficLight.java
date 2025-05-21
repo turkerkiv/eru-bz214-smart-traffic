@@ -12,7 +12,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TrafficLight {
-    public static final double YELLOW_DURATION = 1;
     private List<Vehicle> _vehiclesInLine;
     private double _greenLightDuration;
     private LightState _currentLightState;
@@ -122,28 +121,33 @@ public class TrafficLight {
                     setVehicleSpawnPoints();
                     placeVehiclesToPoints();
                     //TODO in here we must calculate this traffic light's red and green light again by accessing other traffic light's durations and calculating them
+
+                    _greenLightDuration = CycleManager.calculateGreenLightDuration(this);
+                    _redLightDuration = CycleManager.calculateRedLightDuration(this);
                 }
             }
         }
     }
 
-    public void calculateGreenLightDuration(double cycleDuration, int totalCars) {
-        _greenLightDuration = (double) _vehiclesInLine.size() / totalCars * cycleDuration;
-        System.out.println(_location + " location has green : " + _greenLightDuration);
+    public void setGLDuration(double greenLightDuration) {
+        _greenLightDuration = greenLightDuration;
     }
 
-    public void calculateRedLightDuration(List<Double> greenLights) {
-        for (double d : greenLights) {
-            _redLightDuration += d;
-            if (d > 0)
-                _redLightDuration += YELLOW_DURATION;
-        }
-
-        System.out.println(_location + " location has red: " + _redLightDuration);
+    public void setRedLDuration(double redLightDuration) {
+        _redLightDuration = redLightDuration;
     }
 
     public double getGLDuration() {
         return _greenLightDuration;
+    }
+
+    public double getRedLDuration() {
+        return _redLightDuration;
+    }
+
+    public int getVehicleCountInLine()
+    {
+        return _vehiclesInLine.size();
     }
 
     public double getRoadLeftLine() {
