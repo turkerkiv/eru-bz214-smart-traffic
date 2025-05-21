@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class CycleManager {
-    public static final double CYCLE_DURATION = 20;
+    public static final double CYCLE_DURATION = 45;
     public static final double YELLOW_DURATION = 1;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;

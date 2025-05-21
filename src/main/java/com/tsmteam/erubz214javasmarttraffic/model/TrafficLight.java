@@ -117,11 +117,6 @@ public class TrafficLight {
                         vehicle.changeState();
                     }
 
-                    //TODO arabalar niye geri yerine gidiyo ki gitmesin olduğu yerde kalsın?
-                    setVehicleSpawnPoints();
-                    placeVehiclesToPoints();
-                    //TODO in here we must calculate this traffic light's red and green light again by accessing other traffic light's durations and calculating them
-
                     _greenLightDuration = CycleManager.calculateGreenLightDuration(this);
                     _redLightDuration = CycleManager.calculateRedLightDuration(this);
                 }
