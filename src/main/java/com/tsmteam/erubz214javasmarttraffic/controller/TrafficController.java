@@ -27,7 +27,12 @@ public class TrafficController {
     private TextField northInput;
     @FXML
     private Button startButton;
-
+    @FXML
+    private TextField eastInput;
+    @FXML
+    private TextField southInput;
+    @FXML
+    private TextField westInput;
     @FXML
     private Pane carsPane;
     @FXML
@@ -38,8 +43,11 @@ public class TrafficController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int nInput = Integer.parseInt(northInput.getText());
+                int eInput = Integer.parseInt(eastInput.getText());
+                int sInput = Integer.parseInt(southInput.getText());
+                int wInput = Integer.parseInt(westInput.getText());
 
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, new int[]{nInput, 25, 20, 15}, carsPane);
+                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, new int[]{nInput, eInput, sInput, wInput}, carsPane);
                 AnimationLoop animationLoop = new AnimationLoop();
                 animationLoop.start();
             }

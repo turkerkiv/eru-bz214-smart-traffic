@@ -19,11 +19,11 @@
     <Line endX="100.0" layoutX="302.0" layoutY="100.0" rotate="90.0" startX="-100.0" />
     <Pane fx:id="carsPane" />
     <Pane fx:id="lightsPane" />
-   <TextField fx:id="northInput" layoutX="424.0" layoutY="393.0" />
+    <TextField fx:id="northInput" layoutX="424.0" layoutY="393.0" />
    <Button fx:id="startButton" layoutX="529.0" layoutY="560.0" mnemonicParsing="false" text="Başlat" />
-   <TextField layoutX="424.0" layoutY="434.0" />
-   <TextField layoutX="424.0" layoutY="478.0" />
-   <TextField layoutX="424.0" layoutY="521.0" />
+   <TextField fx:id="eastInput" layoutX="424.0" layoutY="434.0" />
+   <TextField fx:id="southInput" layoutX="424.0" layoutY="478.0" />
+   <TextField fx:id="westInput" layoutX="424.0" layoutY="521.0" />
    <Text layoutX="378.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="North" />
    <Text layoutX="378.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="East" />
    <Text layoutX="373.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="South" />
