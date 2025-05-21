@@ -35,13 +35,14 @@ public class CycleManager {
         }
 
         // creates vehicles
-        for(int i = 0; i < carCounts.length; i++)
-        {
+        for (int i = 0; i < carCounts.length; i++) {
             TrafficLight light = _trafficLights.get(i);
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
             _allVehicles.addAll(Arrays.asList(vehicles));
             light.addVehiclesToRoad(vehicles);
+        }
 
+        for (TrafficLight light : _trafficLights) {
             light.setGLDuration(calculateGreenLightDuration(light));
             light.setRedLDuration(calculateRedLightDuration(light));
         }
@@ -58,25 +59,21 @@ public class CycleManager {
         }
     }
 
-    public static TrafficLight getRandomDestination(TrafficLight initialLocation)
-    {
+    public static TrafficLight getRandomDestination(TrafficLight initialLocation) {
         List<TrafficLight> filteredLights = _trafficLights.stream().filter(x -> x.getLocation() != initialLocation.getLocation()).toList();
         Random rnd = new Random();
         int randomIndex = rnd.nextInt(0, filteredLights.size());
         return filteredLights.get(randomIndex);
     }
 
-    public static double calculateRedLightDuration(TrafficLight lightToCalculate)
-    {
+    public static double calculateRedLightDuration(TrafficLight lightToCalculate) {
         double sum = 0;
         List<TrafficLight> filteredTrafficLights = _trafficLights.stream().filter(x -> x != lightToCalculate).toList();
-        for(int i = 0; i < filteredTrafficLights.size(); i++)
-        {
+        for (int i = 0; i < filteredTrafficLights.size(); i++) {
             TrafficLight light = filteredTrafficLights.get(i);
             double glDuration = light.getGLDuration();
             sum += glDuration;
-            if(glDuration > 0)
-            {
+            if (glDuration > 0) {
                 sum += YELLOW_DURATION;
             }
         }
@@ -85,13 +82,13 @@ public class CycleManager {
         return sum;
     }
 
-    public static double calculateGreenLightDuration(TrafficLight lightToCalculate){
+    public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
-        for(TrafficLight light : _trafficLights)
-        {
+        for (TrafficLight light : _trafficLights) {
             totalCars += light.getVehicleCountInLine();
         }
-        double glDuration = ((double) lightToCalculate.getVehicleCountInLine() / totalCars)  * CYCLE_DURATION;
+
+        double glDuration = ((double) lightToCalculate.getVehicleCountInLine() / totalCars) * CYCLE_DURATION;
 
         System.out.println(lightToCalculate.getLocation() + " has green light duration of: " + glDuration);
         return glDuration;
