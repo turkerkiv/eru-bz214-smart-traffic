@@ -55,9 +55,11 @@ public class TrafficLight {
     }
 
     public void addVehiclesToRoad(Vehicle[] vehicles) {
+        // TODO - her şeyin burada olması kötü gibi ya da ismi kötü initialize gibi bi şey daha mantıklı
         _vehiclesInLine.addAll(Arrays.asList(vehicles));
         setVehicleSpawnPoints();
         placeVehiclesToPoints();
+        rotateVehiclesAtInitialIfNecessary();
     }
 
     public void run(double now) {
@@ -139,8 +141,7 @@ public class TrafficLight {
         return _redLightDuration;
     }
 
-    public int getVehicleCountInLine()
-    {
+    public int getVehicleCountInLine() {
         return _vehiclesInLine.size();
     }
 
@@ -152,8 +153,16 @@ public class TrafficLight {
         return _location;
     }
 
-    private void placeVehiclesToPoints() {
+    private void rotateVehiclesAtInitialIfNecessary() {
         boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
+        for (Vehicle vehicle : _vehiclesInLine) {
+            if (isHorizontal) {
+                vehicle.rotateImage(90);
+            }
+        }
+    }
+
+    private void placeVehiclesToPoints() {
         int i = 0;
         for (Point2D point : _roadPoints.keySet()) {
             // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
@@ -161,10 +170,6 @@ public class TrafficLight {
             vehicle.teleport(point.getX(), point.getY());
             _roadPoints.put(point, vehicle);
             i++;
-
-            if (isHorizontal) {
-                vehicle.rotateImage(90);
-            }
         }
     }
 
@@ -189,7 +194,6 @@ public class TrafficLight {
                 _roadRightLine = y + middleOffset - 35;
                 _roadLeftLine = y - middleOffset + 35;
             }
-
         }
     }
 

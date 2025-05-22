@@ -84,8 +84,8 @@ public class CycleManager {
 
     // TODO - total time ı da kullanıcıdan alsak
     // TODO - random ve manual input tabları olsun sağ altta
-    // TODO run the game until all cars gone
-    // TODO - animasyonlar eklenmeli
+    // TODO - run the game until all cars gone
+    // TODO - animasyonlar eklenmeli dönme ve reposition of vehicles gibi
     // TODO - refactor yapılmalı road ve traffic light olarak
     // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
