@@ -116,10 +116,17 @@ public class TrafficLight {
                         vehicle.changeState();
                     }
 
+                    // second cycle
                     _greenLightDuration = CycleManager.calculateGreenLightDuration(this);
                     _redLightDuration = CycleManager.calculateRedLightDuration(this);
-                    setVehicleSpawnPoints();
-                    placeVehiclesToPoints();
+                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                    Runnable task = () -> {
+                        setVehicleSpawnPoints();
+                        placeVehiclesToPoints();
+                    };
+                    long delay = 750L;
+                    scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
+                    scheduler.shutdown();
                 }
             }
         }
