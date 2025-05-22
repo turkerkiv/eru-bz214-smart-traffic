@@ -36,7 +36,6 @@ public class TrafficLight {
         _roadUIImage = roadUIImage;
         _location = location;
         _currentLightState = LightState.RED;
-        _lightLastChangeTime = System.nanoTime();
 
         calculateRightAndLeftLine();
 
@@ -90,7 +89,6 @@ public class TrafficLight {
                         Runnable task = () -> vehicle.changeState();
                         long delay = 500 + 300L * i;
                         scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
-
                         scheduler.shutdown();
                     }
                     System.out.println(_location + " now green");
@@ -127,10 +125,12 @@ public class TrafficLight {
     }
 
     public void setGLDuration(double greenLightDuration) {
+        _lightLastChangeTime = System.nanoTime();
         _greenLightDuration = greenLightDuration;
     }
 
     public void setRedLDuration(double redLightDuration) {
+        _lightLastChangeTime = System.nanoTime();
         _redLightDuration = redLightDuration;
     }
 

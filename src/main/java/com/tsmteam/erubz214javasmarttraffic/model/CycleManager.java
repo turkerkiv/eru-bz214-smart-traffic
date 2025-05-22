@@ -12,9 +12,12 @@ import java.util.Random;
 public class CycleManager {
     public static final double CYCLE_DURATION = 45;
     public static final double YELLOW_DURATION = 1;
+    private static int DELAY_TO_START = 3;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static TrafficLight _currentLight;
     private static int _currentLightIndex = 0;
+    private static double _startTime = System.nanoTime();
+    private static boolean _isStarted = false;
 
     private static List<Vehicle> _allVehicles = new ArrayList<>();
 
@@ -41,15 +44,21 @@ public class CycleManager {
             _allVehicles.addAll(Arrays.asList(vehicles));
             light.addVehiclesToRoad(vehicles);
         }
-
-        for (TrafficLight light : _trafficLights) {
-            light.setGLDuration(calculateGreenLightDuration(light));
-            light.setRedLDuration(calculateRedLightDuration(light));
-        }
     }
 
     public static void runCycle(double now, double deltaTime) {
-        // double elapsedSecondsInCycle = (now - ) / 1_000_000_000.0;
+        double elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
+        if (elapsedSecondsInCycle > DELAY_TO_START && !_isStarted) {
+            // start timer after delay too
+            for (TrafficLight light : _trafficLights) {
+                light.setGLDuration(calculateGreenLightDuration(light));
+                light.setRedLDuration(calculateRedLightDuration(light));
+            }
+            _isStarted = true;
+        };
+
+        if (!_isStarted) return;
+
         for (TrafficLight light : _trafficLights) {
             light.run(now);
         }
@@ -85,7 +94,7 @@ public class CycleManager {
     // TODO - total time ı da kullanıcıdan alsak
     // TODO - random ve manual input tabları olsun sağ altta
     // TODO - run the game until all cars gone
-    // TODO - animasyonlar eklenmeli dönme ve reposition of vehicles gibi
+    // TODO - animasyonlar eklenince delay oldu o zaman oyunu 3 sn falan geç başlatmak lazım
     // TODO - refactor yapılmalı road ve traffic light olarak
     // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
