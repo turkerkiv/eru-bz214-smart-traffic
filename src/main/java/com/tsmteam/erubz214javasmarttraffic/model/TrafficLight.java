@@ -119,14 +119,8 @@ public class TrafficLight {
                     // second cycle
                     _greenLightDuration = CycleManager.calculateGreenLightDuration(this);
                     _redLightDuration = CycleManager.calculateRedLightDuration(this);
-                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-                    Runnable task = () -> {
-                        setVehicleSpawnPoints();
-                        placeVehiclesToPoints();
-                    };
-                    long delay = 750L;
-                    scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
-                    scheduler.shutdown();
+                    setVehicleSpawnPoints();
+                    placeVehiclesToPoints();
                 }
             }
         }
@@ -172,9 +166,8 @@ public class TrafficLight {
     private void placeVehiclesToPoints() {
         int i = 0;
         for (Point2D point : _roadPoints.keySet()) {
-            // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
             Vehicle vehicle = _vehiclesInLine.get(i);
-            vehicle.teleport(point.getX(), point.getY());
+            vehicle.teleportToPoint(point);
             _roadPoints.put(point, vehicle);
             i++;
         }

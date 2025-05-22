@@ -2,7 +2,12 @@ package com.tsmteam.erubz214javasmarttraffic.model;
 
 import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.VehicleState;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.awt.geom.Point2D;
 
 public class Vehicle {
     private String _name;
@@ -56,22 +61,59 @@ public class Vehicle {
         }
     }
 
-    public void teleport(double x, double y) {
-        _uiImage.setX(x);
-        _uiImage.setY(y);
+    public void teleportToPoint(Point2D destination) {
+        double dx = destination.getX() - _uiImage.getX();
+        double dy = destination.getY() - _uiImage.getY();
+        double durationInMs = 1000;
+        TranslateTransition move = new TranslateTransition(Duration.millis(durationInMs), _uiImage);
+        move.setByX(dx);
+        move.setByY(dy);
+        move.setCycleCount(1);
+        move.setAutoReverse(false);
+        move.setOnFinished((e) -> {
+            _uiImage.setX(destination.getX());
+            _uiImage.setY(destination.getY());
+            _uiImage.setTranslateX(0);
+            _uiImage.setTranslateY(0);
+        });
+        move.play();
     }
 
     public void turn() {
         _didTurn = true;
 
         // deciding whether to rotate image or not
-        boolean shouldRotateImage = true;
-        if ((_initialLocation == Direction.NORTH || _initialLocation == Direction.SOUTH) && (_destination.getLocation() == Direction.NORTH || _destination.getLocation() == Direction.SOUTH))
-            shouldRotateImage = false;
-        else if ((_initialLocation == Direction.EAST || _initialLocation == Direction.WEST) && (_destination.getLocation() == Direction.EAST || _destination.getLocation() == Direction.WEST))
-            shouldRotateImage = false;
-        if (shouldRotateImage)
-            rotateImage(90);
+        double angleToRotate = 0;
+        Direction destination = _destination.getLocation();
+        switch (_initialLocation)
+        {
+            case NORTH -> {
+                if(destination == Direction.EAST)
+                    angleToRotate = -90;
+                else if(destination == Direction.WEST)
+                    angleToRotate = 90;
+            }
+            case EAST -> {
+                if(destination == Direction.NORTH)
+                    angleToRotate = 90;
+                else if(destination == Direction.SOUTH)
+                    angleToRotate = -90;
+            }
+            case SOUTH -> {
+                if(destination == Direction.EAST)
+                    angleToRotate = 90;
+                else if(destination == Direction.WEST)
+                    angleToRotate = -90;
+            }
+            case WEST -> {
+                if(destination == Direction.SOUTH)
+                    angleToRotate = 90;
+                else if(destination == Direction.NORTH)
+                    angleToRotate = -90;
+            }
+        }
+
+        rotateImage(angleToRotate);
 
         // changing initialLocation because moving depends on it
         switch (_destination.getLocation()) {
@@ -83,7 +125,13 @@ public class Vehicle {
     }
 
     public void rotateImage(double angle) {
-        _uiImage.setRotate(_uiImage.getRotate() + angle);
+        if(angle == 0) return;
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(600), _uiImage);
+        rotateTransition.setByAngle(angle);
+        rotateTransition.setCycleCount(1);
+        rotateTransition.setAutoReverse(false);
+        rotateTransition.play();
+
     }
 
     public boolean isStillInRoad(double roadEndLine) {
