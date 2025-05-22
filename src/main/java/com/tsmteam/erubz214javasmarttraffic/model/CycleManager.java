@@ -82,6 +82,13 @@ public class CycleManager {
         return sum;
     }
 
+    // TODO - total time ı da kullanıcıdan alsak
+    // TODO - random ve manual input tabları olsun sağ altta
+    // TODO run the game until all cars gone
+    // TODO - animasyonlar eklenmeli
+    // TODO - refactor yapılmalı road ve traffic light olarak
+    // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
+
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
         for (TrafficLight light : _trafficLights) {

@@ -39,7 +39,6 @@ public class TrafficLight {
         _lightLastChangeTime = System.nanoTime();
 
         calculateRightAndLeftLine();
-        calculateRoadEndLine();
 
         // _lightImages = new Dictionary<LightState, String>();
     }
@@ -50,10 +49,8 @@ public class TrafficLight {
 
     private void calculateRoadEndLine() {
         switch (_location) {
-            case NORTH -> _roadEndLine = _roadUIImage.getHeight();
-            case EAST -> _roadEndLine = _roadUIImage.getLayoutX();
-            case SOUTH -> _roadEndLine = _roadUIImage.getLayoutY();
-            case WEST -> _roadEndLine = _roadUIImage.getWidth();
+            case NORTH, SOUTH -> _roadEndLine = _roadPoints.keySet().stream().toList().get(0).getY();
+            case EAST, WEST -> _roadEndLine = _roadPoints.keySet().stream().toList().get(0).getX();
         }
     }
 
@@ -119,6 +116,8 @@ public class TrafficLight {
 
                     _greenLightDuration = CycleManager.calculateGreenLightDuration(this);
                     _redLightDuration = CycleManager.calculateRedLightDuration(this);
+                    setVehicleSpawnPoints();
+                    placeVehiclesToPoints();
                 }
             }
         }
@@ -158,7 +157,6 @@ public class TrafficLight {
         int i = 0;
         for (Point2D point : _roadPoints.keySet()) {
             // if (i == _roadPoints.size()) i = _roadPoints.size() - 1;
-            // TODO run the game until all cars gone
             Vehicle vehicle = _vehiclesInLine.get(i);
             vehicle.teleport(point.getX(), point.getY());
             _roadPoints.put(point, vehicle);
@@ -223,5 +221,7 @@ public class TrafficLight {
 
             _roadPoints.put(new Point2D.Double(x, y), null);
         }
+
+        calculateRoadEndLine();
     }
 }
