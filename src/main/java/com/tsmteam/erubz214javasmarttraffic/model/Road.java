@@ -59,7 +59,7 @@ public class Road {
         }
     }
 
-    public void placeVehiclesToPoints() {
+    private void placeVehiclesToPoints() {
         int i = 0;
         for (Point2D point : _roadPoints.keySet()) {
             Vehicle vehicle = _vehiclesInLine.get(i);
@@ -69,8 +69,7 @@ public class Road {
         }
     }
 
-
-    public void setVehicleSpawnPoints() {
+    private void setVehicleSpawnPoints() {
         _roadPoints.clear();
         int carsOffset = 50;
         for (int i = 1; i < _vehiclesInLine.size() + 1; i++) {
@@ -98,46 +97,41 @@ public class Road {
 
             _roadPoints.put(new Point2D.Double(x, y), null);
         }
+    }
 
+    public void setUpRoad(){
+        setVehicleSpawnPoints();
         calculateRoadEndLine();
+        placeVehiclesToPoints();
     }
 
-    private void rotateVehiclesAtInitialIfNecessary() {
-        boolean isHorizontal = _location == Direction.EAST || _location == Direction.WEST;
-        for (Vehicle vehicle : _vehiclesInLine) {
-            if (isHorizontal) {
-                vehicle.rotateImage(90);
-            }
-        }
+    public void runFrame() {
+        checkIfVehiclesStillInRoad();
     }
 
-    public Direction getLocation()
-    {
+    public Direction getLocation() {
         return _location;
     }
 
     public void addVehiclesToRoad(Vehicle[] vehicles) {
-        // TODO - her şeyin burada olması kötü gibi ya da ismi kötü initialize gibi bi şey daha mantıklı
         _vehiclesInLine.addAll(Arrays.asList(vehicles));
-        setVehicleSpawnPoints();
-        placeVehiclesToPoints();
-        rotateVehiclesAtInitialIfNecessary();
     }
 
-    public void changeVehicleStates()
-    {
+    public void changeVehicleStates() {
         for (Vehicle vehicle : _vehiclesInLine) {
             vehicle.changeState();
         }
     }
 
-    public void changeVehicleStatesDelayed()
-    {
+    public void changeVehicleStatesDelayed() {
         for (int i = 0; i < _vehiclesInLine.size(); i++) {
             Vehicle vehicle = _vehiclesInLine.get(i);
 
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            Runnable task = () -> vehicle.changeState();
+            Runnable task = () -> {
+                if (vehicle.isStillInRoad(_roadEndLine))
+                    vehicle.changeState();
+            };
             long delay = 500 + 300L * i;
             scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
             scheduler.shutdown();
@@ -148,7 +142,7 @@ public class Road {
         return _vehiclesInLine.size();
     }
 
-    public void checkIfVehiclesStillInLine(){
+    public void checkIfVehiclesStillInRoad() {
         for (int i = 0; i < _vehiclesInLine.size(); i++) {
             Vehicle vehicle = _vehiclesInLine.get(i);
             if (!vehicle.isStillInRoad(_roadEndLine)) {

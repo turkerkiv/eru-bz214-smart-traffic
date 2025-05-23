@@ -15,46 +15,45 @@ public class Vehicle {
     private Rectangle _uiImage;
     private VehicleState _vehicleState;
     private TrafficLight _connectedTrafficLight;
-    private Road _destination;
+    private Road _destinationRoad;
     private Direction _initialLocation;
     private boolean _didTurn = false;
 
-    public Vehicle(String name, double speed, Rectangle uiImage, TrafficLight connectedTrafficLight, Road destination) {
+    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation, Road destinationRoad) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
-        _connectedTrafficLight = connectedTrafficLight;
-        _initialLocation = connectedTrafficLight.getLocation();
-        _destination = destination;
+        _initialLocation = initialLocation;
+        _destinationRoad = destinationRoad;
     }
 
-    public void run(double deltaTime) {
+    public void runFrame(double deltaTime) {
         if (_vehicleState == VehicleState.MOVING) {
             double distance = _speed * deltaTime;
             switch (_initialLocation) {
                 case NORTH -> {
                     double newY = _uiImage.getY() + distance;
                     _uiImage.setY(newY);
-                    if (!_didTurn && newY > _destination.getRoadLeftLine() - 35)
+                    if (!_didTurn && newY > _destinationRoad.getRoadLeftLine() - 35)
                         turn();
                 }
                 case EAST -> {
                     double newX = _uiImage.getX() - distance;
                     _uiImage.setX(newX);
-                    if (!_didTurn && newX < _destination.getRoadLeftLine() - 20)
+                    if (!_didTurn && newX < _destinationRoad.getRoadLeftLine() - 20)
                         turn();
                 }
                 case SOUTH -> {
                     double newY = _uiImage.getY() - distance;
                     _uiImage.setY(newY);
-                    if (!_didTurn && newY < _destination.getRoadLeftLine() - 35)
+                    if (!_didTurn && newY < _destinationRoad.getRoadLeftLine() - 35)
                         turn();
                 }
                 case WEST -> {
                     double newX = _uiImage.getX() + distance;
                     _uiImage.setX(newX);
-                    if (!_didTurn && newX > _destination.getRoadLeftLine() - 20)
+                    if (!_didTurn && newX > _destinationRoad.getRoadLeftLine() - 20)
                         turn();
                 }
             }
@@ -84,7 +83,7 @@ public class Vehicle {
 
         // deciding whether to rotate image or not
         double angleToRotate = 0;
-        Direction destination = _destination.getLocation();
+        Direction destination = _destinationRoad.getLocation();
         switch (_initialLocation)
         {
             case NORTH -> {
@@ -116,7 +115,7 @@ public class Vehicle {
         rotateImage(angleToRotate);
 
         // changing initialLocation because moving depends on it
-        switch (_destination.getLocation()) {
+        switch (_destinationRoad.getLocation()) {
             case NORTH -> _initialLocation = Direction.SOUTH;
             case EAST -> _initialLocation = Direction.WEST;
             case SOUTH -> _initialLocation = Direction.NORTH;
@@ -137,16 +136,16 @@ public class Vehicle {
     public boolean isStillInRoad(double roadEndLine) {
         switch (_initialLocation) {
             case NORTH -> {
-                return _uiImage.getY() < roadEndLine;
+                return _uiImage.getY() <= roadEndLine;
             }
             case EAST -> {
-                return _uiImage.getX() > roadEndLine;
+                return _uiImage.getX() >= roadEndLine;
             }
             case SOUTH -> {
-                return _uiImage.getY() > roadEndLine;
+                return _uiImage.getY() >= roadEndLine;
             }
             case WEST -> {
-                return _uiImage.getX() < roadEndLine;
+                return _uiImage.getX() <= roadEndLine;
             }
         }
         return false;

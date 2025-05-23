@@ -14,6 +14,6 @@ public class AnimationLoop extends AnimationTimer {
     public void handle(long l) {
         double deltaTime = (l - _lastUpdate) / 1_000_000_000.0;
         _lastUpdate = System.nanoTime();
-        CycleManager.runCycle(l, deltaTime);
+        CycleManager.runFrame(l, deltaTime);
     }
 }

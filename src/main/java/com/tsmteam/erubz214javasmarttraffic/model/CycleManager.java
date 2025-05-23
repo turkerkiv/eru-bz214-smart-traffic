@@ -4,18 +4,13 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class CycleManager {
-    public static final double CYCLE_DURATION = 45;
+    public static final double CYCLE_DURATION = 25;
     public static final double YELLOW_DURATION = 1;
     private static int DELAY_TO_START = 3;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
-    private static TrafficLight _currentLight;
-    private static int _currentLightIndex = 0;
     private static double _startTime = System.nanoTime();
     private static boolean _isStarted = false;
 
@@ -27,50 +22,53 @@ public class CycleManager {
     }
 
     public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane) {
-        // lets say right now carCounts in shape of [north, east, south, west]
-        // absolutely change the signature of this method to make it more readable
+        // carCounts and roads in shape of [north, east, south, west]
 
-        // creates 4 lights
-        int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
-            TrafficLight light = new TrafficLight(Direction.values()[i]);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
             _trafficLights.add(light);
-            Road road = new Road(light, roads[i]);
-            light.setRoad(road);
         }
 
         // creates vehicles
         for (int i = 0; i < carCounts.length; i++) {
             TrafficLight light = _trafficLights.get(i);
+            Road road = light.getRoad();
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
+            road.addVehiclesToRoad(vehicles);
+            road.setUpRoad();
+
             _allVehicles.addAll(Arrays.asList(vehicles));
-            light.getRoad().addVehiclesToRoad(vehicles);
         }
     }
 
-    public static void runCycle(double now, double deltaTime) {
+    public static void runFrame(double now, double deltaTime) {
         double elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
-        if (elapsedSecondsInCycle > DELAY_TO_START && !_isStarted) {
-            // start timer after delay too
+        if (!_isStarted && elapsedSecondsInCycle > DELAY_TO_START) {
+            // start timer too after delay
+            Collections.shuffle(_trafficLights);
             for (TrafficLight light : _trafficLights) {
                 light.setGLDuration(calculateGreenLightDuration(light));
                 light.setRedLDuration(calculateRedLightDuration(light));
             }
             _isStarted = true;
-        };
+        }
 
         if (!_isStarted) return;
 
+        //below are all independently exist & run
         for (TrafficLight light : _trafficLights) {
-            light.run(now);
+            light.runFrame(now);
+
+            Road road = light.getRoad();
+            road.runFrame();
         }
 
         for (Vehicle vehicle : _allVehicles) {
-            vehicle.run(deltaTime);
+            vehicle.runFrame(deltaTime);
         }
     }
 
-    public static TrafficLight getRandomDestination(TrafficLight initialLocation) {
+    public static TrafficLight getRandomDestinationExceptInitial(TrafficLight initialLocation) {
         List<TrafficLight> filteredLights = _trafficLights.stream().filter(x -> x.getLocation() != initialLocation.getLocation()).toList();
         Random rnd = new Random();
         int randomIndex = rnd.nextInt(0, filteredLights.size());
@@ -96,17 +94,23 @@ public class CycleManager {
     // TODO - total time ı da kullanıcıdan alsak
     // TODO - random ve manual input tabları olsun sağ altta
     // TODO - run the game until all cars gone
-    // TODO - refactor yapılmalı road ve traffic light olarak
+    // TODO - oyunu durdurma, ispaused ekle
+    // TODO - oyunu resetleme, clear yap init ile tekrar başlat
+    // TODO - eğer arabalar biterse sıra diğer yola geçebilir bence direkt
+    // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
+
     // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
         for (TrafficLight light : _trafficLights) {
-            totalCars += light.getVehicleCountInLine();
+            Road road = light.getRoad();
+            totalCars += road.getVehicleCountInLine();
         }
 
-        double glDuration = ((double) lightToCalculate.getVehicleCountInLine() / totalCars) * CYCLE_DURATION;
+        Road road = lightToCalculate.getRoad();
+        double glDuration = ((double) road.getVehicleCountInLine() / totalCars) * CYCLE_DURATION;
 
         System.out.println(lightToCalculate.getLocation() + " has green light duration of: " + glDuration);
         return glDuration;
