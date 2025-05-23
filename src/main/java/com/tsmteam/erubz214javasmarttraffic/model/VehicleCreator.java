@@ -23,7 +23,7 @@ public class VehicleCreator {
 
             // selecting random destination for vehicle
             TrafficLight destination = CycleManager.getRandomDestination(initialLocation);
-            vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation, destination);
+            vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation, destination.getRoad());
         }
         return vehicles;
     }

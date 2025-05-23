@@ -15,11 +15,11 @@ public class Vehicle {
     private Rectangle _uiImage;
     private VehicleState _vehicleState;
     private TrafficLight _connectedTrafficLight;
-    private TrafficLight _destination;
+    private Road _destination;
     private Direction _initialLocation;
     private boolean _didTurn = false;
 
-    public Vehicle(String name, double speed, Rectangle uiImage, TrafficLight connectedTrafficLight, TrafficLight destination) {
+    public Vehicle(String name, double speed, Rectangle uiImage, TrafficLight connectedTrafficLight, Road destination) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;

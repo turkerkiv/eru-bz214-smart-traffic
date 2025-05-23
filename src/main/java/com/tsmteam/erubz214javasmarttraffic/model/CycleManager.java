@@ -33,8 +33,10 @@ public class CycleManager {
         // creates 4 lights
         int totalCars = Arrays.stream(carCounts).sum();
         for (int i = 0; i < carCounts.length; i++) {
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
+            TrafficLight light = new TrafficLight(Direction.values()[i]);
             _trafficLights.add(light);
+            Road road = new Road(light, roads[i]);
+            light.setRoad(road);
         }
 
         // creates vehicles
@@ -42,7 +44,7 @@ public class CycleManager {
             TrafficLight light = _trafficLights.get(i);
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
             _allVehicles.addAll(Arrays.asList(vehicles));
-            light.addVehiclesToRoad(vehicles);
+            light.getRoad().addVehiclesToRoad(vehicles);
         }
     }
 
@@ -94,8 +96,8 @@ public class CycleManager {
     // TODO - total time ı da kullanıcıdan alsak
     // TODO - random ve manual input tabları olsun sağ altta
     // TODO - run the game until all cars gone
-    // TODO - animasyonlar eklenince delay oldu o zaman oyunu 3 sn falan geç başlatmak lazım
     // TODO - refactor yapılmalı road ve traffic light olarak
+    // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
     // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
