@@ -38,18 +38,23 @@ public class TrafficController {
     @FXML
     private Pane lightsPane;
 
+    AnimationLoop _animationLoop = new AnimationLoop();
+
     public void initialize() {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                _animationLoop.stop();
+
                 int nInput = Integer.parseInt(northInput.getText());
                 int eInput = Integer.parseInt(eastInput.getText());
                 int sInput = Integer.parseInt(southInput.getText());
                 int wInput = Integer.parseInt(westInput.getText());
 
                 CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, new int[]{nInput, eInput, sInput, wInput}, carsPane);
-                AnimationLoop animationLoop = new AnimationLoop();
-                animationLoop.start();
+
+                _animationLoop.start();
+                startButton.setDisable(true);
             }
         });
     }

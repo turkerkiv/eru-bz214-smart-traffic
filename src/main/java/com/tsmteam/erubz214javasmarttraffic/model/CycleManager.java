@@ -13,16 +13,28 @@ public class CycleManager {
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static double _startTime = System.nanoTime();
     private static boolean _isStarted = false;
-
+    private static boolean _isPaused = false;
     private static List<Vehicle> _allVehicles = new ArrayList<>();
 
-    // there will be one background images pane, one lights pane, one cars pane
+    private static int[] _inputCarCounts;
+    private static Rectangle[] _inputRoadRectangles;
+    private static Pane _inputVehiclesPane;
 
     public CycleManager() {
     }
 
     public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane) {
         // carCounts and roads in shape of [north, east, south, west]
+        _inputCarCounts = carCounts;
+        _inputRoadRectangles = roads;
+        _inputVehiclesPane = vehiclesPane;
+        _isStarted = false;
+        _startTime = System.nanoTime();
+        _trafficLights.clear();
+        for(Vehicle vhc : _allVehicles)
+        {
+            vehiclesPane.getChildren().remove(vhc.getUiImage());
+        }
 
         for (int i = 0; i < carCounts.length; i++) {
             TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
@@ -42,6 +54,8 @@ public class CycleManager {
     }
 
     public static void runFrame(double now, double deltaTime) {
+        if(_isPaused) return;
+
         double elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
         if (!_isStarted && elapsedSecondsInCycle > DELAY_TO_START) {
             // start timer too after delay
@@ -94,8 +108,8 @@ public class CycleManager {
     // TODO - total time ı da kullanıcıdan alsak
     // TODO - random ve manual input tabları olsun sağ altta
     // TODO - run the game until all cars gone
-    // TODO - oyunu durdurma, ispaused ekle
-    // TODO - oyunu resetleme, clear yap init ile tekrar başlat
+    // TODO - pauselarda falan animasyonlar devam ediyor
+    // TODO - hocanın resetten kastı nedir? ona göre fonksiyonu değişecek
     // TODO - eğer arabalar biterse sıra diğer yola geçebilir bence direkt
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
@@ -116,11 +130,11 @@ public class CycleManager {
         return glDuration;
     }
 
-    public static void pauseCycle() {
-
+    public static void togglePauseCycle() {
+        _isPaused = !_isPaused;
     }
 
     public static void resetCycle() {
-
+        initNewCycle(_inputRoadRectangles, _inputCarCounts, _inputVehiclesPane);
     }
 }

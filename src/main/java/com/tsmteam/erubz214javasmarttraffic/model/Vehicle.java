@@ -28,6 +28,11 @@ public class Vehicle {
         _destinationRoad = destinationRoad;
     }
 
+    public Rectangle getUiImage()
+    {
+        return _uiImage;
+    }
+
     public void runFrame(double deltaTime) {
         if (_vehicleState == VehicleState.MOVING) {
             double distance = _speed * deltaTime;
