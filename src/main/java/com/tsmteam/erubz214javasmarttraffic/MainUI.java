@@ -13,7 +13,7 @@ public class MainUI extends Application {
         URL fxmlLocation = MainUI.class.getResource("odev.fxml");
         System.out.println(fxmlLocation);
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
-        Scene scene = new Scene(loader.load(), 600, 600);
+        Scene scene = new Scene(loader.load(), 690, 704);
 
         stage.setTitle("Smart Traffic UI with Scene Builder");
         stage.setScene(scene);
