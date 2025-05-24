@@ -57,5 +57,7 @@ public class TrafficController {
                 startButton.setDisable(true);
             }
         });
+
+
     }
 }
