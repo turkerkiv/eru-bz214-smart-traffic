@@ -7,9 +7,10 @@ import javafx.scene.shape.Rectangle;
 import java.util.*;
 
 public class CycleManager {
-    public static final double CYCLE_DURATION = 25;
+    public static final double CYCLE_DURATION = 60;
     public static final double YELLOW_DURATION = 1;
     private static int DELAY_TO_START = 3;
+    private static double _elapsedSecondsInCycle;
     private static List<TrafficLight> _trafficLights = new ArrayList<>();
     private static double _startTime = System.nanoTime();
     private static boolean _isStarted = false;
@@ -23,12 +24,11 @@ public class CycleManager {
     public CycleManager() {
     }
 
-    private static void clearCycle(){
+    private static void clearCycle() {
         _isStarted = false;
         _startTime = System.nanoTime();
         _trafficLights.clear();
-        for(Vehicle vhc : _allVehicles)
-        {
+        for (Vehicle vhc : _allVehicles) {
             _inputVehiclesPane.getChildren().remove(vhc.getUiImage());
         }
     }
@@ -59,11 +59,14 @@ public class CycleManager {
     }
 
     public static void runFrame(double now, double deltaTime) {
-        if(_isPaused) return;
+        if (_isPaused || _elapsedSecondsInCycle > CYCLE_DURATION) return;
 
-        double elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
-        if (!_isStarted && elapsedSecondsInCycle > DELAY_TO_START) {
+        _elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
+        System.out.println(_elapsedSecondsInCycle + " elapsed");
+        if (!_isStarted && _elapsedSecondsInCycle > DELAY_TO_START) {
             // start timer too after delay
+            _elapsedSecondsInCycle = 0;
+            _startTime = System.nanoTime();
             Collections.shuffle(_trafficLights);
             for (TrafficLight light : _trafficLights) {
                 light.setGLDuration(calculateGreenLightDuration(light));
@@ -117,7 +120,7 @@ public class CycleManager {
     // TODO - eğer arabalar biterse sıra diğer yola geçebilir bence direkt
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
-
+    // TODO - geri kırmızı olunca değil de 4ü de 1 tur bittikten sonra tekrar hesaplatmak lazım gl ve rl durationları
     // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
@@ -128,7 +131,7 @@ public class CycleManager {
         }
 
         Road road = lightToCalculate.getRoad();
-        double glDuration = ((double) road.getVehicleCountInLine() / totalCars) * CYCLE_DURATION;
+        double glDuration = ((double) road.getVehicleCountInLine() / totalCars) * (CYCLE_DURATION - _elapsedSecondsInCycle - 4);
 
         System.out.println(lightToCalculate.getLocation() + " has green light duration of: " + glDuration);
         return glDuration;

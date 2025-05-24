@@ -54,6 +54,7 @@ public class TrafficLight {
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
+//                System.out.println(elapsedSecondsInGreen);
                 if (elapsedSecondsInGreen > _greenLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
