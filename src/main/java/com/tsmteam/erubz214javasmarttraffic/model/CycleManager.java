@@ -23,18 +23,23 @@ public class CycleManager {
     public CycleManager() {
     }
 
-    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane) {
-        // carCounts and roads in shape of [north, east, south, west]
-        _inputCarCounts = carCounts;
-        _inputRoadRectangles = roads;
-        _inputVehiclesPane = vehiclesPane;
+    private static void clearCycle(){
         _isStarted = false;
         _startTime = System.nanoTime();
         _trafficLights.clear();
         for(Vehicle vhc : _allVehicles)
         {
-            vehiclesPane.getChildren().remove(vhc.getUiImage());
+            _inputVehiclesPane.getChildren().remove(vhc.getUiImage());
         }
+    }
+
+    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane) {
+        // carCounts and roads in shape of [north, east, south, west]
+        _inputCarCounts = carCounts;
+        _inputRoadRectangles = roads;
+        _inputVehiclesPane = vehiclesPane;
+
+        clearCycle();
 
         for (int i = 0; i < carCounts.length; i++) {
             TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
@@ -109,7 +114,6 @@ public class CycleManager {
     // TODO - random ve manual input tabları olsun sağ altta
     // TODO - run the game until all cars gone
     // TODO - pauselarda falan animasyonlar devam ediyor
-    // TODO - hocanın resetten kastı nedir? ona göre fonksiyonu değişecek
     // TODO - eğer arabalar biterse sıra diğer yola geçebilir bence direkt
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
@@ -135,6 +139,6 @@ public class CycleManager {
     }
 
     public static void resetCycle() {
-        initNewCycle(_inputRoadRectangles, _inputCarCounts, _inputVehiclesPane);
+        clearCycle();
     }
 }
