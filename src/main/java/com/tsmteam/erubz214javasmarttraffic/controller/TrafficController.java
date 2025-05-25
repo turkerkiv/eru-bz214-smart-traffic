@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.util.Random;
@@ -49,6 +50,14 @@ public class TrafficController {
     private TextField westInput;
     @FXML
     private TextField randomUpperLimitInput;
+    @FXML
+    private Text westTimer;
+    @FXML
+    private Text northTimer;
+    @FXML
+    private Text eastTimer;
+    @FXML
+    private Text southTimer;
     @FXML
     private Pane carsPane;
     @FXML
