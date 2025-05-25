@@ -62,7 +62,6 @@ public class CycleManager {
         if (_isPaused || _elapsedSecondsInCycle > CYCLE_DURATION) return;
 
         _elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
-        System.out.println(_elapsedSecondsInCycle + " elapsed");
         if (!_isStarted && _elapsedSecondsInCycle > DELAY_TO_START) {
             // start timer too after delay
             _elapsedSecondsInCycle = 0;
@@ -137,8 +136,12 @@ public class CycleManager {
         return glDuration;
     }
 
-    public static void togglePauseCycle() {
+    public static void togglePauseCycle(AnimationLoop animationLoop) {
         _isPaused = !_isPaused;
+        if (_isPaused)
+            animationLoop.stop();
+        else
+            animationLoop.start();
     }
 
     public static void resetCycle() {

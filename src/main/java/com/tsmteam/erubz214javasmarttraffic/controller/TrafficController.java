@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -25,17 +26,17 @@ public class TrafficController {
     @FXML
     private Rectangle westRoad;
     @FXML
-    private Rectangle northRoadLight;
+    private Image northRoadLight;
     @FXML
-    private Rectangle eastRoadLight;
+    private Image eastRoadLight;
     @FXML
-    private Rectangle southRoadLight;
+    private Image southRoadLight;
     @FXML
-    private Rectangle westRoadLight;
+    private Image westRoadLight;
     @FXML
     private Button startButton;
     @FXML
-    private Button stopButton;
+    private Button pauseButton;
     @FXML
     private Button resetButton;
     @FXML
@@ -85,6 +86,19 @@ public class TrafficController {
 
                 _animationLoop.start();
                 startButton.setDisable(true);
+            }
+        });
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                CycleManager.resetCycle();
+                startButton.setDisable(false);
+            }
+        });
+        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                CycleManager.togglePauseCycle(_animationLoop);
             }
         });
 
