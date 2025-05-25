@@ -5,6 +5,7 @@ import com.tsmteam.erubz214javasmarttraffic.model.CycleManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -62,6 +63,10 @@ public class TrafficController {
     private Pane carsPane;
     @FXML
     private Pane lightsPane;
+    @FXML
+    private Group transitionRectangles;
+    @FXML
+    private Text transitionTimer;
 
 
     AnimationLoop _animationLoop = new AnimationLoop();
@@ -77,21 +82,20 @@ public class TrafficController {
                 if (isRandom) {
                     int rInput = Integer.parseInt(rInputText);
                     Random rand = new Random();
-                    int northCount= rand.nextInt(rInput+1);
-                    int eastCount= rand.nextInt(rInput-northCount+1);
-                    int southCount= rand.nextInt(rInput-northCount-eastCount+1);
-                    int westCount= rand.nextInt(rInput-northCount-eastCount-southCount+1);
-                    carCounts = new int[]{northCount,eastCount,southCount,westCount};
-                }
-                else {
+                    int northCount = rand.nextInt(rInput + 1);
+                    int eastCount = rand.nextInt(rInput - northCount + 1);
+                    int southCount = rand.nextInt(rInput - northCount - eastCount + 1);
+                    int westCount = rand.nextInt(rInput - northCount - eastCount - southCount + 1);
+                    carCounts = new int[]{northCount, eastCount, southCount, westCount};
+                } else {
                     int nInput = Integer.parseInt(northInput.getText());
                     int eInput = Integer.parseInt(eastInput.getText());
                     int sInput = Integer.parseInt(southInput.getText());
                     int wInput = Integer.parseInt(westInput.getText());
-                   carCounts= new int[]{nInput, eInput, sInput, wInput};
+                    carCounts = new int[]{nInput, eInput, sInput, wInput};
                 }
 
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad},carCounts, carsPane, lightsPane);
+                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCounts, carsPane, lightsPane, transitionRectangles, transitionTimer);
 
                 _animationLoop.start();
                 startButton.setDisable(true);

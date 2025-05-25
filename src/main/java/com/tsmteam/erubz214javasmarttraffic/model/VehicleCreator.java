@@ -48,8 +48,8 @@ public class VehicleCreator {
 
             carImage.setFitWidth(23);
             carImage.setFitHeight(42);
-            carImage.setX(500);
-            carImage.setY(500);
+            carImage.setX(0);
+            carImage.setY(0);
 
             vehiclesPane.getChildren().add(carImage);
 

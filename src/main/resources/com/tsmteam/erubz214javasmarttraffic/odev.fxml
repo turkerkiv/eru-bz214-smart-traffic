@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsmteam.erubz214javasmarttraffic.controller.TrafficController">
@@ -251,20 +252,20 @@
             <Image url="@image/kaldirim.png" />
          </image>
       </ImageView>
-      <TabPane layoutX="439.0" layoutY="447.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="208.0" prefWidth="255.0" style="-fx-border-color: transparent; tab-header-area: transparent; -fx-skin: transparent;" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="442.0" layoutY="486.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="166.0" prefWidth="244.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab text="User Input">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="134.0" prefWidth="253.0" style="-fx-background-color: transparent;">
                      <children>
-                        <Text layoutX="7.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NORTH" wrappingWidth="40.0" />
-                        <Text layoutX="4.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EAST" wrappingWidth="47.0" />
-                        <Text layoutX="4.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOUTH" wrappingWidth="47.0" />
-                        <Text layoutX="4.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEST" wrappingWidth="47.0" />
-                        <TextField fx:id="northInput" layoutX="50.0" layoutY="20.0" style="-fx-border-color: black;" />
-                        <TextField fx:id="eastInput" layoutX="50.0" layoutY="59.0" style="-fx-border-color: black;" />
-                        <TextField fx:id="southInput" layoutX="50.0" layoutY="92.0" style="-fx-border-color: black;" />
-                        <TextField fx:id="westInput" layoutX="50.0" layoutY="130.0" style="-fx-border-color: black;" />
+                        <Text layoutX="14.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NORTH" wrappingWidth="57.0" />
+                        <Text layoutX="14.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EAST" wrappingWidth="47.0" />
+                        <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOUTH" wrappingWidth="47.0" />
+                        <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEST" wrappingWidth="47.0" />
+                        <TextField fx:id="northInput" editable="false" layoutX="77.0" layoutY="7.0" />
+                        <TextField fx:id="eastInput" layoutX="77.0" layoutY="36.0" />
+                        <TextField fx:id="southInput" layoutX="77.0" layoutY="65.0" />
+                        <TextField fx:id="westInput" layoutX="77.0" layoutY="94.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -273,16 +274,16 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="randomUpperLimitInput" layoutX="25.0" layoutY="51.0" prefHeight="0.0" prefWidth="170.0" promptText="Üst sınır " style="-fx-border-color: black;" />
+                        <TextField fx:id="randomUpperLimitInput" layoutX="37.0" layoutY="54.0" prefHeight="0.0" prefWidth="170.0" promptText="Upper Limit" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
          </tabs>
       </TabPane>
-      <Button fx:id="resetButton" layoutX="448.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
-      <Button fx:id="pauseButton" layoutX="528.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
-      <Button fx:id="startButton" layoutX="614.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
+      <Button fx:id="resetButton" layoutX="447.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
+      <Button fx:id="pauseButton" layoutX="526.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
+      <Button fx:id="startButton" layoutX="605.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
       <Pane fx:id="carsPane" />
       <Pane fx:id="lightsPane" />
       <Group layoutX="279.0" layoutY="433.0">
@@ -309,10 +310,22 @@
             <Text fx:id="northTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
          </children>
       </Group>
-      <Group layoutX="586.0" layoutY="425.0">
+      <Group layoutX="584.0" layoutY="454.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="37.0" />
-            <Text fx:id="cycleTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="33.0" />
+            <Text fx:id="cycleTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" wrappingWidth="32.871999740600586" />
+         </children>
+      </Group>
+      <Text layoutX="491.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cycle Duration" />
+      <Group fx:id="transitionRectangles" layoutX="-40.0" layoutY="-250.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="737.0" layoutY="217.0" stroke="BLACK" strokeType="INSIDE" width="479.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="737.0" layoutX="333.0" stroke="BLACK" strokeType="INSIDE" width="479.0" />
+            <Text fx:id="transitionTimer" fill="WHITE" layoutX="377.0" layoutY="620.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+               <font>
+                  <Font name="JetBrains Mono NL SemiBold Italic" size="96.0" />
+               </font>
+            </Text>
          </children>
       </Group>
    </children>

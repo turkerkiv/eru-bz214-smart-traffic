@@ -1,8 +1,10 @@
 package com.tsmteam.erubz214javasmarttraffic.model;
 
 import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import java.util.*;
 
@@ -20,6 +22,8 @@ public class CycleManager {
     private static int[] _inputCarCounts;
     private static Rectangle[] _inputRoadRectangles;
     private static Pane _inputVehiclesPane;
+    private static Group _transitionRectangles;
+    private static Text _transitionTimer;
 
     public CycleManager() {
     }
@@ -33,11 +37,13 @@ public class CycleManager {
         }
     }
 
-    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane, Pane lightsPane) {
+    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane, Pane lightsPane, Group transitionRectangles, Text transitionTimer) {
         // carCounts and roads in shape of [north, east, south, west]
         _inputCarCounts = carCounts;
         _inputRoadRectangles = roads;
         _inputVehiclesPane = vehiclesPane;
+        _transitionRectangles = transitionRectangles;
+        _transitionTimer = transitionTimer;
 
         clearCycle();
 
@@ -62,6 +68,8 @@ public class CycleManager {
         if (_isPaused || _elapsedSecondsInCycle > CYCLE_DURATION) return;
 
         _elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
+        _transitionTimer.setText(String.valueOf(Math.round(DELAY_TO_START - _elapsedSecondsInCycle)));
+        _transitionRectangles.setOpacity(DELAY_TO_START - _elapsedSecondsInCycle);
         if (!_isStarted && _elapsedSecondsInCycle > DELAY_TO_START) {
             // start timer too after delay
             _elapsedSecondsInCycle = 0;
@@ -72,6 +80,7 @@ public class CycleManager {
                 light.setRedLDuration(calculateRedLightDuration(light));
             }
             _isStarted = true;
+            _transitionRectangles.setVisible(false);
         }
 
         if (!_isStarted) return;
