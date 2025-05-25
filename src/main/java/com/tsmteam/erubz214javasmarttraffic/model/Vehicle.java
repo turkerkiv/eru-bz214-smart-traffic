@@ -131,7 +131,7 @@ public class Vehicle {
 
     public void rotateImage(double angle) {
         if(angle == 0) return;
-        RotateTransition rotateTransition = new RotateTransition(Duration.millis(600), _uiImage);
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(400), _uiImage);
         rotateTransition.setByAngle(angle);
         rotateTransition.setCycleCount(1);
         rotateTransition.setAutoReverse(false);

@@ -11,30 +11,30 @@ import java.util.Random;
 
 public class VehicleCreator {
     private static final String[] _carImagePaths = {
-            "/image/cars/1.png",
-            "/image/cars/2.png",
-            "/image/cars/3.png",
-            "/image/cars/4.png",
-            "/image/cars/5.png",
-            "/image/cars/6.png",
-            "/image/cars/7.png",
-            "/image/cars/8.png",
-            "/image/cars/9.png",
-            "/image/cars/10.png",
-            "/image/cars/11.png",
-            "/image/cars/12.png",
-            "/image/cars/13.png",
-            "/image/cars/14.png",
-            "/image/cars/15.png",
-            "/image/cars/16.png",
-            "/image/cars/17.png",
-            "/image/cars/18.png",
-            "/image/cars/19.png",
-            "/image/cars/20.png",
-            "/image/cars/21.png",
-            "/image/cars/22.png",
-            "/image/cars/23.png",
-            "/image/cars/24.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/1.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/2.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/3.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/4.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/5.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/6.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/7.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/8.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/9.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/10.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/11.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/12.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/13.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/14.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/15.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/16.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/17.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/18.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/19.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/20.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/21.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/22.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/23.png",
+            "/com/tsmteam/erubz214javasmarttraffic/image/cars/24.png",
     };
 
     private static final Random _random = new Random();
@@ -46,8 +46,8 @@ public class VehicleCreator {
             Image image = new Image(VehicleCreator.class.getResourceAsStream(imagePath));
             ImageView carImage = new ImageView(image);
 
-            carImage.setFitWidth(20);
-            carImage.setFitHeight(40);
+            carImage.setFitWidth(23);
+            carImage.setFitHeight(42);
             carImage.setX(500);
             carImage.setY(500);
 
@@ -67,10 +67,12 @@ public class VehicleCreator {
     }
 
     private static void rotateVehiclesIfNecessary(Direction initialLocation, Vehicle[] vehicles) {
-        boolean isHorizontal = initialLocation == Direction.EAST || initialLocation == Direction.WEST;
         for (Vehicle vehicle : vehicles) {
-            if (isHorizontal) {
-                vehicle.rotateImage(90);
+            switch (initialLocation)
+            {
+                case NORTH -> vehicle.rotateImage(180);
+                case EAST -> vehicle.rotateImage(270);
+                case WEST -> vehicle.rotateImage(90);
             }
         }
     }
