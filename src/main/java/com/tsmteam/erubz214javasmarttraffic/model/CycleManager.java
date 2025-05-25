@@ -113,15 +113,13 @@ public class CycleManager {
         return sum;
     }
 
-    // TODO - total time ı da kullanıcıdan alsak
-    // TODO - random ve manual input tabları olsun sağ altta
-    // TODO - run the game until all cars gone
+    // TODO - araba grafikleri
+
+    // TODO - ışık grafikleri
+
     // TODO - pauselarda falan animasyonlar devam ediyor
-    // TODO - eğer arabalar biterse sıra diğer yola geçebilir bence direkt
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
-    // TODO - kırmızı yandı vb ondan sonrasında hesaplarken yine cycle duration üzerinden hesaplıyor halbuki kalan süreden hesaplaması lazım.
     // TODO - geri kırmızı olunca değil de 4ü de 1 tur bittikten sonra tekrar hesaplatmak lazım gl ve rl durationları
-    // TODO - arabalar aslında initial location a göre hareket ediyor bu da kötü olabiir?
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
