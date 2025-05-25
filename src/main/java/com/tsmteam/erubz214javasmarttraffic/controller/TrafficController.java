@@ -82,7 +82,7 @@ public class TrafficController {
                    carCounts= new int[]{nInput, eInput, sInput, wInput};
                 }
 
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad},carCounts, carsPane);
+                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad},carCounts, carsPane, lightsPane);
 
                 _animationLoop.start();
                 startButton.setDisable(true);

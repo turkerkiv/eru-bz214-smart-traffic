@@ -33,7 +33,7 @@ public class CycleManager {
         }
     }
 
-    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane) {
+    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane, Pane lightsPane) {
         // carCounts and roads in shape of [north, east, south, west]
         _inputCarCounts = carCounts;
         _inputRoadRectangles = roads;
@@ -42,7 +42,7 @@ public class CycleManager {
         clearCycle();
 
         for (int i = 0; i < carCounts.length; i++) {
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i]);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], lightsPane);
             _trafficLights.add(light);
         }
 
@@ -112,13 +112,13 @@ public class CycleManager {
         return sum;
     }
 
-    // TODO - araba grafikleri
-
     // TODO - ışık grafikleri
 
     // TODO - pauselarda falan animasyonlar devam ediyor
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - geri kırmızı olunca değil de 4ü de 1 tur bittikten sonra tekrar hesaplatmak lazım gl ve rl durationları
+    // TODO - roadlarda 0 araba olunca bozuluyor
+    // TODO - traffic lightları o pane e koy
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;

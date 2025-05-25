@@ -279,26 +279,6 @@
             </Tab>
          </tabs>
       </TabPane>
-      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="398.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image fx:id="southRoadLight"  url="@image/kirmizisik.png" />
-         </image>
-      </ImageView>
-      <ImageView  fitHeight="100.0" fitWidth="100.0" layoutX="245.0" layoutY="362.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image fx:id="westRoadLight" url="@image/kirmizisik.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="295.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image fx:id= "northRoadLight" url="@image/kirmizisik.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="448.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image fx:id="eastRoadLight" url="@image/kirmizisik.png" />
-         </image>
-      </ImageView>
       <Button fx:id="resetButton" layoutX="448.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
       <Button fx:id="pauseButton" layoutX="528.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
       <Button fx:id="startButton" layoutX="614.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
