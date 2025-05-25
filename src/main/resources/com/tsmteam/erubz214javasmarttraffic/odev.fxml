@@ -302,7 +302,7 @@
       <Button layoutX="448.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
       <Button layoutX="528.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
       <Button layoutX="614.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
+      <Pane fx:id="carsPane" />
+      <Pane fx:id="lightsPane" />
    </children>
-   <Pane fx:id="carsPane" />
-   <Pane fx:id="lightsPane" />
 </Pane>
