@@ -22,7 +22,7 @@
     <Line endX="100.0" layoutX="302.0" layoutY="100.0" rotate="90.0" startX="-100.0" />
     <Pane fx:id="carsPane" />
     <Pane fx:id="lightsPane" />
-   <TabPane layoutX="386.0" layoutY="386.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+   <TabPane layoutX="386.0" layoutY="358.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
      <tabs>
        <Tab text="Manual">
          <content>
@@ -36,7 +36,6 @@
                       <TextField fx:id="southInput" layoutX="58.0" layoutY="77.0" prefHeight="26.0" prefWidth="128.0" />
                       <TextField fx:id="westInput" layoutX="57.0" layoutY="109.0" prefHeight="26.0" prefWidth="130.0" />
                       <Text layoutX="15.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="West" />
-                      <Button fx:id="startButton" layoutX="17.0" layoutY="142.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" text="Başlat" />
                   </children>
                </AnchorPane>
          </content>
@@ -45,8 +44,7 @@
          <content>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <Button layoutX="45.0" layoutY="129.0" mnemonicParsing="false" text="Random Başlat" />
-                     <TextField layoutX="19.0" layoutY="93.0" />
+                      <TextField fx:id="randomUpperLimitInput" layoutX="19.0" layoutY="93.0" />
                      <Text layoutX="67.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Üst Sınır" />
                   </children>
                </AnchorPane>
@@ -54,4 +52,5 @@
        </Tab>
      </tabs>
    </TabPane>
+    <Button fx:id="startButton" layoutX="381.0" layoutY="562.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" text="Başlat" />
 </Pane>
