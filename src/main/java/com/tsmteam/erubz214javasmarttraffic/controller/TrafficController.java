@@ -25,7 +25,19 @@ public class TrafficController {
     @FXML
     private Rectangle westRoad;
     @FXML
+    private Rectangle northRoadLight;
+    @FXML
+    private Rectangle eastRoadLight;
+    @FXML
+    private Rectangle southRoadLight;
+    @FXML
+    private Rectangle westRoadLight;
+    @FXML
     private Button startButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Button resetButton;
     @FXML
     private TextField northInput;
     @FXML
