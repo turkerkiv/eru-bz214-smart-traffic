@@ -4,6 +4,7 @@ import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.VehicleState;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -12,14 +13,14 @@ import java.awt.geom.Point2D;
 public class Vehicle {
     private String _name;
     private double _speed;
-    private Rectangle _uiImage;
+    private ImageView _uiImage;
     private VehicleState _vehicleState;
     private TrafficLight _connectedTrafficLight;
     private Road _destinationRoad;
     private Direction _initialLocation;
     private boolean _didTurn = false;
 
-    public Vehicle(String name, double speed, Rectangle uiImage, Direction initialLocation, Road destinationRoad) {
+    public Vehicle(String name, double speed, ImageView uiImage, Direction initialLocation, Road destinationRoad) {
         _name = name;
         _speed = speed;
         _uiImage = uiImage;
@@ -28,7 +29,7 @@ public class Vehicle {
         _destinationRoad = destinationRoad;
     }
 
-    public Rectangle getUiImage()
+    public ImageView getUiImage()
     {
         return _uiImage;
     }
