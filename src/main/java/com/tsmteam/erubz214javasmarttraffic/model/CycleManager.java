@@ -42,7 +42,7 @@ public class CycleManager {
         clearCycle();
 
         for (int i = 0; i < carCounts.length; i++) {
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], lightsPane);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], lightsPane, YELLOW_DURATION);
             _trafficLights.add(light);
         }
 
@@ -128,7 +128,7 @@ public class CycleManager {
         }
 
         Road road = lightToCalculate.getRoad();
-        double glDuration = ((double) road.getVehicleCountInLine() / totalCars) * (CYCLE_DURATION - _elapsedSecondsInCycle - 4);
+        double glDuration = ((double) road.getVehicleCountInLine() / totalCars) * (CYCLE_DURATION - _elapsedSecondsInCycle - 4 * YELLOW_DURATION);
 
         System.out.println(lightToCalculate.getLocation() + " has green light duration of: " + glDuration);
         return glDuration;

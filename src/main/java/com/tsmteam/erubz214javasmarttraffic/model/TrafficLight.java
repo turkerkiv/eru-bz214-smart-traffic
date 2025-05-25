@@ -20,15 +20,15 @@ public class TrafficLight {
     private double _lightLastChangeTime;
     private Pane _trafficLightPane;
 
-    public TrafficLight(Direction location, Rectangle road, Pane trafficLightPane) {
+    public TrafficLight(Direction location, Rectangle road, Pane trafficLightPane, double yellowLightDuration) {
         _location = location;
         _currentLightState = LightState.RED;
         _road = new Road(this, road);
         _trafficLightPane = trafficLightPane;
+        _yellowLightDuration = yellowLightDuration;
 
-        _lightImages = new HashMap<LightState, ImageView>();
+        _lightImages = new HashMap<>();
         Image redLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/kirmizisik.png"));
-
         ImageView redLightIV = new ImageView(redLightImage);
         Image greenLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/yesilisik.png"));
         ImageView greenLightIV = new ImageView(greenLightImage);
@@ -38,45 +38,45 @@ public class TrafficLight {
         _lightImages.put(LightState.YELLOW, yellowLightIV);
         _lightImages.put(LightState.GREEN, greenLightIV);
         _trafficLightPane.getChildren().add(_lightImages.get(LightState.RED));
-        redLightIV.setFitWidth(100);
-        redLightIV.setFitHeight(100);
-        greenLightIV.setFitWidth(100);
-        greenLightIV.setFitHeight(100);
-        yellowLightIV.setFitWidth(100);
-        yellowLightIV.setFitHeight(100);
+        redLightIV.setFitWidth(80);
+        redLightIV.setFitHeight(80);
+        greenLightIV.setFitWidth(80);
+        greenLightIV.setFitHeight(80);
+        yellowLightIV.setFitWidth(80);
+        yellowLightIV.setFitHeight(80);
         switch (_location)
         {
             case NORTH -> {
-                redLightIV.setLayoutX(295);
-                redLightIV.setLayoutY(206);
-                greenLightIV.setLayoutX(295);
-                greenLightIV.setLayoutY(206);
-                yellowLightIV.setLayoutX(295);
-                yellowLightIV.setLayoutY(206);
+                redLightIV.setLayoutX(309);
+                redLightIV.setLayoutY(229);
+                greenLightIV.setLayoutX(309);
+                greenLightIV.setLayoutY(229);
+                yellowLightIV.setLayoutX(309);
+                yellowLightIV.setLayoutY(229);
             }
             case EAST -> {
-                redLightIV.setLayoutX(448);
-                redLightIV.setLayoutY(244);
-                greenLightIV.setLayoutX(448);
-                greenLightIV.setLayoutY(244);
-                yellowLightIV.setLayoutX(448);
-                yellowLightIV.setLayoutY(244);
+                redLightIV.setLayoutX(446);
+                redLightIV.setLayoutY(252);
+                greenLightIV.setLayoutX(446);
+                greenLightIV.setLayoutY(252);
+                yellowLightIV.setLayoutX(446);
+                yellowLightIV.setLayoutY(252);
             }
             case SOUTH -> {
-                redLightIV.setLayoutX(398);
-                redLightIV.setLayoutY(393);
-                greenLightIV.setLayoutX(398);
-                greenLightIV.setLayoutY(393);
-                yellowLightIV.setLayoutX(398);
-                yellowLightIV.setLayoutY(393);
+                redLightIV.setLayoutX(420);
+                redLightIV.setLayoutY(380);
+                greenLightIV.setLayoutX(420);
+                greenLightIV.setLayoutY(380);
+                yellowLightIV.setLayoutX(420);
+                yellowLightIV.setLayoutY(380);
             }
             case WEST -> {
-                redLightIV.setLayoutX(245);
-                redLightIV.setLayoutY(362);
-                greenLightIV.setLayoutX(245);
-                greenLightIV.setLayoutY(362);
-                yellowLightIV.setLayoutX(245);
-                yellowLightIV.setLayoutY(362);
+                redLightIV.setLayoutX(290);
+                redLightIV.setLayoutY(360);
+                greenLightIV.setLayoutX(290);
+                greenLightIV.setLayoutY(360);
+                yellowLightIV.setLayoutX(290);
+                yellowLightIV.setLayoutY(360);
             }
         }
     }
@@ -113,7 +113,6 @@ public class TrafficLight {
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
-//                System.out.println(elapsedSecondsInGreen);
                 if (elapsedSecondsInGreen > _greenLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;
