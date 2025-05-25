@@ -285,25 +285,25 @@
       <Button fx:id="startButton" layoutX="614.0" layoutY="655.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
       <Pane fx:id="carsPane" />
       <Pane fx:id="lightsPane" />
-      <Group layoutX="254.0" layoutY="434.0">
+      <Group layoutX="279.0" layoutY="433.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="37.0" />
             <Text fx:id="westTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
          </children>
       </Group>
-      <Group layoutX="410.0" layoutY="461.0">
+      <Group layoutX="420.0" layoutY="441.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="37.0" />
             <Text fx:id="southTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
          </children>
       </Group>
-      <Group layoutX="461.0" layoutY="318.0">
+      <Group layoutX="439.0" layoutY="308.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="37.0" />
             <Text fx:id="eastTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
          </children>
       </Group>
-      <Group layoutX="305.0" layoutY="282.0">
+      <Group layoutX="291.0" layoutY="293.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" stroke="BLACK" strokeType="INSIDE" width="37.0" />
             <Text fx:id="northTimer" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" />
