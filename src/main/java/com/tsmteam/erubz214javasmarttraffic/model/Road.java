@@ -144,14 +144,7 @@ public class Road {
     }
 
     public void checkIfVehiclesStillInRoad() {
-        for (int i = 0; i < _vehiclesInLine.size(); i++) {
-            Vehicle vehicle = _vehiclesInLine.get(i);
-            if (!vehicle.isStillInRoad(_roadEndLine)) {
-                _vehiclesInLine.remove(vehicle);
-                System.out.println("One vehicle left");
-                if (_vehiclesInLine.isEmpty()) break;
-            }
-        }
+        _vehiclesInLine.removeIf(vehicle -> !vehicle.isStillInRoad(_roadEndLine));
     }
 
     public double getRoadLeftLine() {

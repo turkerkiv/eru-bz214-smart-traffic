@@ -2,6 +2,7 @@ package com.tsmteam.erubz214javasmarttraffic.model;
 
 import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -64,7 +65,6 @@ public class CycleManager {
 
     public static void runFrame(double now, double deltaTime) {
         if (_isPaused || _elapsedSecondsInCycle > CYCLE_DURATION) return;
-
         _elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
 //        _transitionTimer.setText(String.valueOf(Math.round(DELAY_TO_START - _elapsedSecondsInCycle)));
 //        _transitionRectangles.setOpacity(DELAY_TO_START - _elapsedSecondsInCycle);
@@ -138,12 +138,15 @@ public class CycleManager {
         return glDuration;
     }
 
-    public static void togglePauseCycle(AnimationLoop animationLoop) {
+    public static void togglePauseCycle(AnimationLoop animationLoop, Button pauseButton) {
         _isPaused = !_isPaused;
-        if (_isPaused)
+        if (_isPaused) {
             animationLoop.stop();
-        else
+            pauseButton.setText("Continue");
+        } else {
             animationLoop.start();
+            pauseButton.setText("Pause");
+        }
     }
 
     public static void resetCycle() {

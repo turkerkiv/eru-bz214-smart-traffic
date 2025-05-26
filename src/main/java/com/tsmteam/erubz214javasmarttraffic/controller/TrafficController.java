@@ -28,14 +28,6 @@ public class TrafficController {
     @FXML
     private Rectangle westRoad;
     @FXML
-    private Image northRoadLight;
-    @FXML
-    private Image eastRoadLight;
-    @FXML
-    private Image southRoadLight;
-    @FXML
-    private Image westRoadLight;
-    @FXML
     private Button startButton;
     @FXML
     private Button pauseButton;
@@ -88,10 +80,18 @@ public class TrafficController {
                     int westCount = rand.nextInt(rInput - northCount - eastCount - southCount + 1);
                     carCounts = new int[]{northCount, eastCount, southCount, westCount};
                 } else {
-                    int nInput = Integer.parseInt(northInput.getText());
-                    int eInput = Integer.parseInt(eastInput.getText());
-                    int sInput = Integer.parseInt(southInput.getText());
-                    int wInput = Integer.parseInt(westInput.getText());
+                    int nInput = 0;
+                    int eInput = 0;
+                    int sInput = 0;
+                    int wInput = 0;
+                    if (!northInput.getText().isEmpty())
+                        nInput = Integer.parseInt(northInput.getText());
+                    if (!eastInput.getText().isEmpty())
+                        eInput = Integer.parseInt(eastInput.getText());
+                    if (!southInput.getText().isEmpty())
+                        sInput = Integer.parseInt(southInput.getText());
+                    if (!westInput.getText().isEmpty())
+                        wInput = Integer.parseInt(westInput.getText());
                     carCounts = new int[]{nInput, eInput, sInput, wInput};
                 }
 
@@ -99,6 +99,15 @@ public class TrafficController {
 
                 _animationLoop.start();
                 startButton.setDisable(true);
+                northInput.setDisable(true);
+                eastInput.setDisable(true);
+                westInput.setDisable(true);
+                southInput.setDisable(true);
+                randomUpperLimitInput.setDisable(true);
+
+                startButton.toFront();
+                resetButton.toFront();
+                pauseButton.toFront();
             }
         });
         resetButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -106,15 +115,18 @@ public class TrafficController {
             public void handle(ActionEvent actionEvent) {
                 CycleManager.resetCycle();
                 startButton.setDisable(false);
+                northInput.setDisable(false);
+                eastInput.setDisable(false);
+                westInput.setDisable(false);
+                southInput.setDisable(false);
+                randomUpperLimitInput.setDisable(false);
             }
         });
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                CycleManager.togglePauseCycle(_animationLoop);
+                CycleManager.togglePauseCycle(_animationLoop, pauseButton);
             }
         });
-
-
     }
 }

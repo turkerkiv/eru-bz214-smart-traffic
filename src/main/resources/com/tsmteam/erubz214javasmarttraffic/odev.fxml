@@ -16,7 +16,6 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsmteam.erubz214javasmarttraffic.controller.TrafficController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3b3c56" height="107.0" layoutX="308.0" layoutY="335.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="140.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1a7d1199" height="266.0" layoutX="438.0" layoutY="447.0" stroke="#00000016" strokeType="INSIDE" width="255.0" />
       <Rectangle fx:id="westRoad" arcHeight="5.0" arcWidth="5.0" fill="#474d53" height="95.0" layoutY="342.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="INSIDE" width="294.0" />
       <Rectangle fx:id="southRoad" arcHeight="5.0" arcWidth="5.0" fill="#474d53" height="273.0" layoutX="328.0" layoutY="432.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
       <Rectangle fx:id="northRoad" arcHeight="5.0" arcWidth="5.0" fill="#474d53" height="298.0" layoutX="328.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
@@ -252,38 +251,9 @@
             <Image url="@image/kaldirim.png" />
          </image>
       </ImageView>
-      <TabPane layoutX="442.0" layoutY="486.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="166.0" prefWidth="244.0" tabClosingPolicy="UNAVAILABLE">
-         <tabs>
-            <Tab text="User Input">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="134.0" prefWidth="253.0" style="-fx-background-color: transparent;">
-                     <children>
-                        <Text layoutX="14.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NORTH" wrappingWidth="57.0" />
-                        <Text layoutX="14.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EAST" wrappingWidth="47.0" />
-                        <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOUTH" wrappingWidth="47.0" />
-                        <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEST" wrappingWidth="47.0" />
-                        <TextField fx:id="northInput" layoutX="77.0" layoutY="7.0" />
-                        <TextField fx:id="eastInput" layoutX="77.0" layoutY="36.0" />
-                        <TextField fx:id="southInput" layoutX="77.0" layoutY="65.0" />
-                        <TextField fx:id="westInput" layoutX="77.0" layoutY="94.0" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab style="-fx-border-color: transparent;" text="Random ">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="randomUpperLimitInput" layoutX="37.0" layoutY="54.0" prefHeight="0.0" prefWidth="170.0" promptText="Upper Limit" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-      <Button fx:id="resetButton" layoutX="447.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
-      <Button fx:id="pauseButton" layoutX="526.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
-      <Button fx:id="startButton" layoutX="605.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
+      <Button fx:id="resetButton" layoutX="447.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
+      <Button fx:id="pauseButton" layoutX="526.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
+      <Button fx:id="startButton" layoutX="605.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
       <Pane fx:id="carsPane" />
       <Pane fx:id="lightsPane" />
       <Group layoutX="279.0" layoutY="433.0">
@@ -328,5 +298,34 @@
             </Text>
          </children>
       </Group>
+      <TabPane layoutX="442.0" layoutY="486.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="166.0" prefWidth="244.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="User Input">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="134.0" prefWidth="253.0" style="-fx-background-color: transparent;">
+                     <children>
+                        <Text layoutX="14.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NORTH" wrappingWidth="57.0" />
+                        <Text layoutX="14.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EAST" wrappingWidth="47.0" />
+                        <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOUTH" wrappingWidth="47.0" />
+                        <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEST" wrappingWidth="47.0" />
+                        <TextField fx:id="northInput" layoutX="77.0" layoutY="7.0" />
+                        <TextField fx:id="eastInput" layoutX="77.0" layoutY="36.0" />
+                        <TextField fx:id="southInput" layoutX="77.0" layoutY="65.0" />
+                        <TextField fx:id="westInput" layoutX="77.0" layoutY="94.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab style="-fx-border-color: transparent;" text="Random ">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="randomUpperLimitInput" layoutX="37.0" layoutY="54.0" prefHeight="0.0" prefWidth="170.0" promptText="Upper Limit" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </children>
 </Pane>
