@@ -262,7 +262,7 @@
                         <Text layoutX="14.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EAST" wrappingWidth="47.0" />
                         <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOUTH" wrappingWidth="47.0" />
                         <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEST" wrappingWidth="47.0" />
-                        <TextField fx:id="northInput" editable="false" layoutX="77.0" layoutY="7.0" />
+                        <TextField fx:id="northInput" layoutX="77.0" layoutY="7.0" />
                         <TextField fx:id="eastInput" layoutX="77.0" layoutY="36.0" />
                         <TextField fx:id="southInput" layoutX="77.0" layoutY="65.0" />
                         <TextField fx:id="westInput" layoutX="77.0" layoutY="94.0" />
