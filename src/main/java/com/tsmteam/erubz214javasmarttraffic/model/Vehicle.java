@@ -2,6 +2,7 @@ package com.tsmteam.erubz214javasmarttraffic.model;
 
 import com.tsmteam.erubz214javasmarttraffic.enums.Direction;
 import com.tsmteam.erubz214javasmarttraffic.enums.VehicleState;
+import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,8 @@ public class Vehicle {
     private Road _destinationRoad;
     private Direction _initialLocation;
     private boolean _didTurn = false;
+    private TranslateTransition _translateTransition;
+    private RotateTransition _rotateTransition;
 
     public Vehicle(double speed, ImageView uiImage, Direction initialLocation, Road destinationRoad) {
         _speed = speed;
@@ -25,10 +28,11 @@ public class Vehicle {
         _vehicleState = VehicleState.WAITING;
         _initialLocation = initialLocation;
         _destinationRoad = destinationRoad;
+        _rotateTransition = new RotateTransition(Duration.millis(400), _uiImage);
+        _translateTransition = new TranslateTransition(Duration.millis(1000), _uiImage);
     }
 
-    public ImageView getUiImage()
-    {
+    public ImageView getUiImage() {
         return _uiImage;
     }
 
@@ -67,19 +71,18 @@ public class Vehicle {
     public void teleportToPoint(Point2D destination) {
         double dx = destination.getX() - _uiImage.getX();
         double dy = destination.getY() - _uiImage.getY();
-        double durationInMs = 1000;
-        TranslateTransition move = new TranslateTransition(Duration.millis(durationInMs), _uiImage);
-        move.setByX(dx);
-        move.setByY(dy);
-        move.setCycleCount(1);
-        move.setAutoReverse(false);
-        move.setOnFinished((e) -> {
+        _translateTransition.stop();
+        _translateTransition.setByX(dx);
+        _translateTransition.setByY(dy);
+        _translateTransition.setCycleCount(1);
+        _translateTransition.setAutoReverse(false);
+        _translateTransition.setOnFinished((e) -> {
             _uiImage.setX(destination.getX());
             _uiImage.setY(destination.getY());
             _uiImage.setTranslateX(0);
             _uiImage.setTranslateY(0);
         });
-        move.play();
+        _translateTransition.play();
     }
 
     public void turn() {
@@ -87,30 +90,29 @@ public class Vehicle {
 
         double angleToRotate = 0;
         Direction destination = _destinationRoad.getLocation();
-        switch (_initialLocation)
-        {
+        switch (_initialLocation) {
             case NORTH -> {
-                if(destination == Direction.EAST)
+                if (destination == Direction.EAST)
                     angleToRotate = -90;
-                else if(destination == Direction.WEST)
+                else if (destination == Direction.WEST)
                     angleToRotate = 90;
             }
             case EAST -> {
-                if(destination == Direction.NORTH)
+                if (destination == Direction.NORTH)
                     angleToRotate = 90;
-                else if(destination == Direction.SOUTH)
+                else if (destination == Direction.SOUTH)
                     angleToRotate = -90;
             }
             case SOUTH -> {
-                if(destination == Direction.EAST)
+                if (destination == Direction.EAST)
                     angleToRotate = 90;
-                else if(destination == Direction.WEST)
+                else if (destination == Direction.WEST)
                     angleToRotate = -90;
             }
             case WEST -> {
-                if(destination == Direction.SOUTH)
+                if (destination == Direction.SOUTH)
                     angleToRotate = 90;
-                else if(destination == Direction.NORTH)
+                else if (destination == Direction.NORTH)
                     angleToRotate = -90;
             }
         }
@@ -127,12 +129,12 @@ public class Vehicle {
     }
 
     public void rotateImage(double angle) {
-        if(angle == 0) return;
-        RotateTransition rotateTransition = new RotateTransition(Duration.millis(400), _uiImage);
-        rotateTransition.setByAngle(angle);
-        rotateTransition.setCycleCount(1);
-        rotateTransition.setAutoReverse(false);
-        rotateTransition.play();
+        if (angle == 0) return;
+        _rotateTransition.stop();
+        _rotateTransition.setByAngle(angle);
+        _rotateTransition.setCycleCount(1);
+        _rotateTransition.setAutoReverse(false);
+        _rotateTransition.play();
     }
 
     public boolean isStillInRoad(double roadEndLine) {
@@ -157,6 +159,18 @@ public class Vehicle {
         switch (_vehicleState) {
             case MOVING -> _vehicleState = VehicleState.WAITING;
             case WAITING -> _vehicleState = VehicleState.MOVING;
+        }
+    }
+
+    public void toggleAnimations(boolean isPaused) {
+        if (isPaused) {
+            _rotateTransition.pause();
+            _translateTransition.pause();
+        } else {
+            if (_rotateTransition.getStatus() == Animation.Status.PAUSED)
+                _rotateTransition.play();
+            if (_translateTransition.getStatus() == Animation.Status.PAUSED)
+                _translateTransition.play();
         }
     }
 }
