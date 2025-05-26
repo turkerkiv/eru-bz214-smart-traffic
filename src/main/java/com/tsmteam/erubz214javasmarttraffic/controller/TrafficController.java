@@ -105,6 +105,8 @@ public class TrafficController {
                 CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCounts, new Text[]{northTimer, eastTimer, southTimer, westTimer}, carsPane, lightsPane);
 
                 _animationLoop.start();
+                pauseButton.setDisable(false);
+                resetButton.setDisable(false);
                 startButton.setDisable(true);
                 northInput.setDisable(true);
                 eastInput.setDisable(true);
@@ -127,6 +129,8 @@ public class TrafficController {
                 westInput.setDisable(false);
                 southInput.setDisable(false);
                 randomUpperLimitInput.setDisable(false);
+                pauseButton.setDisable(true);
+                resetButton.setDisable(true);
             }
         });
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {

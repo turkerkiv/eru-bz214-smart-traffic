@@ -251,9 +251,9 @@
             <Image url="@image/kaldirim.png" />
          </image>
       </ImageView>
-      <Button fx:id="resetButton" layoutX="447.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="RESET" />
-      <Button fx:id="pauseButton" layoutX="526.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="PAUSE" />
-      <Button fx:id="startButton" layoutX="605.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="START" />
+      <Button fx:id="resetButton" layoutX="447.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Reset" disable="true" />
+      <Button fx:id="pauseButton" layoutX="526.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Pause" disable="true"/>
+      <Button fx:id="startButton" layoutX="605.0" layoutY="661.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Start" />
       <Pane fx:id="carsPane" />
       <Pane fx:id="lightsPane" />
       <Group layoutX="279.0" layoutY="433.0">
