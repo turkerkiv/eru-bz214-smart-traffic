@@ -11,7 +11,6 @@ import javafx.util.Duration;
 import java.awt.geom.Point2D;
 
 public class Vehicle {
-    private String _name;
     private double _speed;
     private ImageView _uiImage;
     private VehicleState _vehicleState;
@@ -20,8 +19,7 @@ public class Vehicle {
     private Direction _initialLocation;
     private boolean _didTurn = false;
 
-    public Vehicle(String name, double speed, ImageView uiImage, Direction initialLocation, Road destinationRoad) {
-        _name = name;
+    public Vehicle(double speed, ImageView uiImage, Direction initialLocation, Road destinationRoad) {
         _speed = speed;
         _uiImage = uiImage;
         _vehicleState = VehicleState.WAITING;
@@ -87,7 +85,6 @@ public class Vehicle {
     public void turn() {
         _didTurn = true;
 
-        // deciding whether to rotate image or not
         double angleToRotate = 0;
         Direction destination = _destinationRoad.getLocation();
         switch (_initialLocation)
@@ -136,7 +133,6 @@ public class Vehicle {
         rotateTransition.setCycleCount(1);
         rotateTransition.setAutoReverse(false);
         rotateTransition.play();
-
     }
 
     public boolean isStillInRoad(double roadEndLine) {

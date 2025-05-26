@@ -25,6 +25,7 @@ public class CycleManager {
     private static Pane _inputVehiclesPane;
     private static Group _transitionRectangles;
     private static Text _transitionTimer;
+    private static Text _cycleTimerUI;
 
     public CycleManager() {
     }
@@ -36,13 +37,15 @@ public class CycleManager {
         for (Vehicle vhc : _allVehicles) {
             _inputVehiclesPane.getChildren().remove(vhc.getUiImage());
         }
+        _allVehicles.clear();
     }
 
-    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Text[] timers, Pane vehiclesPane, Pane lightsPane) {
+    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Text[] timers, Text cycleTimer, Pane vehiclesPane, Pane lightsPane) {
         // carCounts and roads in shape of [north, east, south, west]
         _inputCarCounts = carCounts;
         _inputRoadRectangles = roads;
         _inputVehiclesPane = vehiclesPane;
+        _cycleTimerUI = cycleTimer;
 
         clearCycle();
 
@@ -82,6 +85,8 @@ public class CycleManager {
         }
 
         if (!_isStarted) return;
+
+        _cycleTimerUI.setText(String.valueOf(Math.round(_elapsedSecondsInCycle)));
 
         //below are all independently exist & run
         for (TrafficLight light : _trafficLights) {

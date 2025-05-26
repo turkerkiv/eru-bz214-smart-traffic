@@ -53,6 +53,8 @@ public class TrafficController {
     @FXML
     private Text southTimer;
     @FXML
+    private Text cycleTimer;
+    @FXML
     private Pane carsPane;
     @FXML
     private Pane lightsPane;
@@ -102,7 +104,7 @@ public class TrafficController {
                     carCounts = new int[]{nInput, eInput, sInput, wInput};
                 }
 
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCounts, new Text[]{northTimer, eastTimer, southTimer, westTimer}, carsPane, lightsPane);
+                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCounts, new Text[]{northTimer, eastTimer, southTimer, westTimer}, cycleTimer, carsPane, lightsPane);
 
                 _animationLoop.start();
                 pauseButton.setDisable(false);

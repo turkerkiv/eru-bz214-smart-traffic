@@ -59,7 +59,7 @@ public class VehicleCreator {
             TrafficLight destinationLight = CycleManager.getRandomDestinationExceptInitial(initialLight);
             Direction initialLocation = initialLight.getLocation();
             Road destinationRoad = destinationLight.getRoad();
-            vehicles[i] = new Vehicle("BMW", speed, carImage, initialLocation, destinationRoad);
+            vehicles[i] = new Vehicle(speed, carImage, initialLocation, destinationRoad);
         }
 
         rotateVehiclesIfNecessary(initialLight.getLocation(), vehicles);
