@@ -100,6 +100,7 @@ public class Road {
     }
 
     public void setUpRoad(){
+        if(_vehiclesInLine.isEmpty()) return;
         setVehicleSpawnPoints();
         calculateRoadEndLine();
         placeVehiclesToPoints();

@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import java.util.*;
 
@@ -19,13 +20,15 @@ public class TrafficLight {
     private Road _road;
     private double _lightLastChangeTime;
     private Pane _trafficLightPane;
+    private Text _timerUI;
 
-    public TrafficLight(Direction location, Rectangle road, Pane trafficLightPane, double yellowLightDuration) {
+    public TrafficLight(Direction location, Rectangle road, Text timerUI, Pane trafficLightPane, double yellowLightDuration) {
         _location = location;
         _currentLightState = LightState.RED;
         _road = new Road(this, road);
         _trafficLightPane = trafficLightPane;
         _yellowLightDuration = yellowLightDuration;
+        _timerUI = timerUI;
 
         _lightImages = new HashMap<>();
         Image redLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/kirmizisik.png"));
@@ -44,8 +47,7 @@ public class TrafficLight {
         greenLightIV.setFitHeight(80);
         yellowLightIV.setFitWidth(80);
         yellowLightIV.setFitHeight(80);
-        switch (_location)
-        {
+        switch (_location) {
             case NORTH -> {
                 redLightIV.setLayoutX(309);
                 redLightIV.setLayoutY(229);
@@ -87,11 +89,12 @@ public class TrafficLight {
     }
 
     public void runFrame(double now) {
-        if (_road.getVehicleCountInLine() == 0) return;
-
         switch (_currentLightState) {
             case RED -> {
                 double elapsedSecondsInRed = (now - _lightLastChangeTime) / 1_000_000_000.0;
+
+                _timerUI.setText(String.valueOf(Math.round(_redLightDuration - elapsedSecondsInRed)));
+
                 if (elapsedSecondsInRed > _redLightDuration) {
                     _currentLightState = LightState.YELLOW;
                     _lightLastChangeTime = System.nanoTime();
@@ -101,6 +104,9 @@ public class TrafficLight {
             }
             case YELLOW -> {
                 double elapsedSecondsInYellow = (now - _lightLastChangeTime) / 1_000_000_000.0;
+
+                _timerUI.setText(String.valueOf(Math.round(_yellowLightDuration - elapsedSecondsInYellow)));
+
                 if (elapsedSecondsInYellow > _yellowLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.GREEN;
@@ -113,6 +119,9 @@ public class TrafficLight {
             }
             case GREEN -> {
                 double elapsedSecondsInGreen = (now - _lightLastChangeTime) / 1_000_000_000.0;
+
+                _timerUI.setText(String.valueOf(Math.round(_greenLightDuration - elapsedSecondsInGreen)));
+
                 if (elapsedSecondsInGreen > _greenLightDuration) {
                     _lightLastChangeTime = System.nanoTime();
                     _currentLightState = LightState.RED;

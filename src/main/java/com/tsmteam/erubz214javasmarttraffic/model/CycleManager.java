@@ -37,18 +37,16 @@ public class CycleManager {
         }
     }
 
-    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Pane vehiclesPane, Pane lightsPane, Group transitionRectangles, Text transitionTimer) {
+    public static void initNewCycle(Rectangle[] roads, int[] carCounts, Text[] timers, Pane vehiclesPane, Pane lightsPane) {
         // carCounts and roads in shape of [north, east, south, west]
         _inputCarCounts = carCounts;
         _inputRoadRectangles = roads;
         _inputVehiclesPane = vehiclesPane;
-        _transitionRectangles = transitionRectangles;
-        _transitionTimer = transitionTimer;
 
         clearCycle();
 
         for (int i = 0; i < carCounts.length; i++) {
-            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], lightsPane, YELLOW_DURATION);
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], timers[i], lightsPane, YELLOW_DURATION);
             _trafficLights.add(light);
         }
 
@@ -68,8 +66,8 @@ public class CycleManager {
         if (_isPaused || _elapsedSecondsInCycle > CYCLE_DURATION) return;
 
         _elapsedSecondsInCycle = (now - _startTime) / 1_000_000_000.0;
-        _transitionTimer.setText(String.valueOf(Math.round(DELAY_TO_START - _elapsedSecondsInCycle)));
-        _transitionRectangles.setOpacity(DELAY_TO_START - _elapsedSecondsInCycle);
+//        _transitionTimer.setText(String.valueOf(Math.round(DELAY_TO_START - _elapsedSecondsInCycle)));
+//        _transitionRectangles.setOpacity(DELAY_TO_START - _elapsedSecondsInCycle);
         if (!_isStarted && _elapsedSecondsInCycle > DELAY_TO_START) {
             // start timer too after delay
             _elapsedSecondsInCycle = 0;
@@ -80,7 +78,7 @@ public class CycleManager {
                 light.setRedLDuration(calculateRedLightDuration(light));
             }
             _isStarted = true;
-            _transitionRectangles.setVisible(false);
+//            _transitionRectangles.setVisible(false);
         }
 
         if (!_isStarted) return;
@@ -125,6 +123,7 @@ public class CycleManager {
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - geri kırmızı olunca değil de 4ü de 1 tur bittikten sonra tekrar hesaplatmak lazım gl ve rl durationları
     // TODO - roadlarda 0 araba olunca bozuluyor
+    // TODO - sayaçlar
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
