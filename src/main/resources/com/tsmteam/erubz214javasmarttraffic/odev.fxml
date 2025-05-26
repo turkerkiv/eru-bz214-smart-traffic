@@ -316,7 +316,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-border-color: transparent;" text="Random ">
+            <Tab style="-fx-border-color: transparent;" text="Random" fx:id="randomTab">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

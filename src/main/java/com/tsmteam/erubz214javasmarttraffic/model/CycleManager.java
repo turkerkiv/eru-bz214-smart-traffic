@@ -122,7 +122,7 @@ public class CycleManager {
     // TODO - pauselarda falan animasyonlar devam ediyor
     // TODO - arabalar kırmızı ışıkta durunca animasyon yerine aynı gecikmeli change state kullanılsa daha doğal gözükebilir ama işte ilk araba geçebiliyor hadi o geçsin dersem bu defa arkadakiler çok geride kalabiliyor çizgiden belki en son repositioning yapılabilir ama speedlerin de çok fark etmemesi lazım yoksa yine bozuluyor.
     // TODO - geri kırmızı olunca değil de 4ü de 1 tur bittikten sonra tekrar hesaplatmak lazım gl ve rl durationları
-    // TODO - buttonlara basılmıyor
+
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;

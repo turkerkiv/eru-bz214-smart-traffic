@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -59,19 +60,25 @@ public class TrafficController {
     private Group transitionRectangles;
     @FXML
     private Text transitionTimer;
+    @FXML
+    private Tab randomTab;
 
 
     AnimationLoop _animationLoop = new AnimationLoop();
+    private boolean _isRandom = false;
 
     public void initialize() {
+        randomTab.setOnSelectionChanged(e -> {
+            _isRandom = randomTab.isSelected();
+        });
+
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 _animationLoop.stop();
                 String rInputText = randomUpperLimitInput.getText();
-                boolean isRandom = !rInputText.isEmpty();
                 int[] carCounts;
-                if (isRandom) {
+                if (_isRandom) {
                     int rInput = Integer.parseInt(rInputText);
                     Random rand = new Random();
                     int northCount = rand.nextInt(rInput + 1);
