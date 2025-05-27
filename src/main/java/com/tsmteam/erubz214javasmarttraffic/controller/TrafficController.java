@@ -16,6 +16,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class TrafficController {
@@ -79,15 +81,20 @@ public class TrafficController {
             public void handle(ActionEvent actionEvent) {
                 _animationLoop.stop();
                 String rInputText = randomUpperLimitInput.getText();
-                int[] carCounts;
+                ArrayList<Integer> carCounts;
                 if (_isRandom) {
                     int rInput = Integer.parseInt(rInputText);
                     Random rand = new Random();
-                    int northCount = rand.nextInt(rInput + 1);
-                    int eastCount = rand.nextInt(rInput - northCount + 1);
-                    int southCount = rand.nextInt(rInput - northCount - eastCount + 1);
-                    int westCount = rand.nextInt(rInput - northCount - eastCount - southCount + 1);
-                    carCounts = new int[]{northCount, eastCount, southCount, westCount};
+                    int firstRoad = rand.nextInt(rInput + 1);
+                    int secondRoad = rand.nextInt(rInput - firstRoad + 1);
+                    int thirdRoad = rand.nextInt(rInput - firstRoad - secondRoad + 1);
+                    int forthRoad = rand.nextInt(rInput - firstRoad - secondRoad - thirdRoad + 1);
+                    carCounts = new ArrayList<>();
+                    carCounts.add(firstRoad);
+                    carCounts.add(secondRoad);
+                    carCounts.add(thirdRoad);
+                    carCounts.add(forthRoad);
+                    Collections.shuffle(carCounts);
                 } else {
                     int nInput = 0;
                     int eInput = 0;
@@ -101,10 +108,19 @@ public class TrafficController {
                         sInput = Integer.parseInt(southInput.getText());
                     if (!westInput.getText().isEmpty())
                         wInput = Integer.parseInt(westInput.getText());
-                    carCounts = new int[]{nInput, eInput, sInput, wInput};
+                    carCounts = new ArrayList<>();
+                    carCounts.add(nInput);
+                    carCounts.add(eInput);
+                    carCounts.add(sInput);
+                    carCounts.add(wInput);
                 }
 
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCounts, new Text[]{northTimer, eastTimer, southTimer, westTimer}, cycleTimer, carsPane, lightsPane);
+                int[] carCountsArr = new int[carCounts.size()];
+                for(int i = 0; i < carCounts.size(); i++)
+                {
+                    carCountsArr[i] = carCounts.get(i);
+                }
+                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCountsArr, new Text[]{northTimer, eastTimer, southTimer, westTimer}, cycleTimer, carsPane, lightsPane);
 
                 _animationLoop.start();
                 pauseButton.setDisable(false);

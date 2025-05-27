@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import java.util.*;
 
 public class CycleManager {
-    public static final double CYCLE_DURATION = 60;
+    public static final double CYCLE_DURATION = 120;
     public static final double YELLOW_DURATION = 1;
     private static int DELAY_TO_START = 3;
     private static double _elapsedSecondsInCycle;
