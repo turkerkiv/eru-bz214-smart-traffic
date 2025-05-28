@@ -80,49 +80,23 @@ public class TrafficController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 _animationLoop.stop();
-                String rInputText = randomUpperLimitInput.getText();
-                ArrayList<Integer> carCounts;
+
+                Rectangle[] roads = new Rectangle[]{northRoad, eastRoad, southRoad, westRoad};
+                Text[] timers = new Text[]{northTimer, eastTimer, southTimer, westTimer};
+
                 if (_isRandom) {
-                    int rInput = Integer.parseInt(rInputText);
-                    Random rand = new Random();
-                    int firstRoad = rand.nextInt(rInput + 1);
-                    int secondRoad = rand.nextInt(rInput - firstRoad + 1);
-                    int thirdRoad = rand.nextInt(rInput - firstRoad - secondRoad + 1);
-                    int forthRoad = rand.nextInt(rInput - firstRoad - secondRoad - thirdRoad + 1);
-                    carCounts = new ArrayList<>();
-                    carCounts.add(firstRoad);
-                    carCounts.add(secondRoad);
-                    carCounts.add(thirdRoad);
-                    carCounts.add(forthRoad);
-                    Collections.shuffle(carCounts);
+                    String rInputText = randomUpperLimitInput.getText();
+                    int rInput = 0;
+                    if (!rInputText.isEmpty())
+                        rInput = Integer.parseInt(rInputText);
+
+                    CycleManager.initNewCycle(roads, rInput, timers, cycleTimer, carsPane, lightsPane);
                 } else {
-                    int nInput = 0;
-                    int eInput = 0;
-                    int sInput = 0;
-                    int wInput = 0;
-                    if (!northInput.getText().isEmpty())
-                        nInput = Integer.parseInt(northInput.getText());
-                    if (!eastInput.getText().isEmpty())
-                        eInput = Integer.parseInt(eastInput.getText());
-                    if (!southInput.getText().isEmpty())
-                        sInput = Integer.parseInt(southInput.getText());
-                    if (!westInput.getText().isEmpty())
-                        wInput = Integer.parseInt(westInput.getText());
-                    carCounts = new ArrayList<>();
-                    carCounts.add(nInput);
-                    carCounts.add(eInput);
-                    carCounts.add(sInput);
-                    carCounts.add(wInput);
+                    int[] carCounts = getCarCounts();
+                    CycleManager.initNewCycle(roads, carCounts, timers, cycleTimer, carsPane, lightsPane);
                 }
-
-                int[] carCountsArr = new int[carCounts.size()];
-                for(int i = 0; i < carCounts.size(); i++)
-                {
-                    carCountsArr[i] = carCounts.get(i);
-                }
-                CycleManager.initNewCycle(new Rectangle[]{northRoad, eastRoad, southRoad, westRoad}, carCountsArr, new Text[]{northTimer, eastTimer, southTimer, westTimer}, cycleTimer, carsPane, lightsPane);
-
                 _animationLoop.start();
+
                 pauseButton.setDisable(false);
                 resetButton.setDisable(false);
                 startButton.setDisable(true);
@@ -131,16 +105,17 @@ public class TrafficController {
                 westInput.setDisable(true);
                 southInput.setDisable(true);
                 randomUpperLimitInput.setDisable(true);
-
                 startButton.toFront();
                 resetButton.toFront();
                 pauseButton.toFront();
             }
         });
+
         resetButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 CycleManager.resetCycle();
+
                 startButton.setDisable(false);
                 northInput.setDisable(false);
                 eastInput.setDisable(false);
@@ -151,11 +126,37 @@ public class TrafficController {
                 resetButton.setDisable(true);
             }
         });
+
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 CycleManager.togglePauseCycle(_animationLoop, pauseButton);
             }
         });
+    }
+
+    private int[] getCarCounts() {
+        String nInputText = northInput.getText();
+        int nInput = 0;
+        if (!nInputText.isEmpty())
+            nInput = Integer.parseInt(northInput.getText());
+
+        String eInputText = eastInput.getText();
+        int eInput = 0;
+        if (!eInputText.isEmpty())
+            eInput = Integer.parseInt(eastInput.getText());
+
+        String sInputText = southInput.getText();
+        int sInput = 0;
+        if (!sInputText.isEmpty())
+            sInput = Integer.parseInt(southInput.getText());
+
+        String wInputText = westInput.getText();
+        int wInput = 0;
+        if (!wInputText.isEmpty())
+            wInput = Integer.parseInt(westInput.getText());
+
+        int[] carCounts = new int[]{nInput, eInput, sInput, wInput};
+        return carCounts;
     }
 }

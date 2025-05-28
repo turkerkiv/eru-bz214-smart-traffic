@@ -20,8 +20,6 @@ public class CycleManager {
     private static boolean _isPaused = false;
     private static List<Vehicle> _allVehicles = new ArrayList<>();
 
-    private static int[] _inputCarCounts;
-    private static Rectangle[] _inputRoadRectangles;
     private static Pane _inputVehiclesPane;
     private static Group _transitionRectangles;
     private static Text _transitionTimer;
@@ -40,10 +38,29 @@ public class CycleManager {
         _allVehicles.clear();
     }
 
+    private static int[] getRandomVehicleCounts(int upperLimit) {
+        ArrayList<Integer> carCounts = new ArrayList<>();
+        Random rand = new Random();
+        int firstRoad = rand.nextInt(upperLimit + 1);
+        int secondRoad = rand.nextInt(upperLimit - firstRoad + 1);
+        int thirdRoad = rand.nextInt(upperLimit - firstRoad - secondRoad + 1);
+        int forthRoad = rand.nextInt(upperLimit - firstRoad - secondRoad - thirdRoad + 1);
+        carCounts = new ArrayList<>();
+        carCounts.add(firstRoad);
+        carCounts.add(secondRoad);
+        carCounts.add(thirdRoad);
+        carCounts.add(forthRoad);
+        Collections.shuffle(carCounts);
+
+        int[] carCountsArr = new int[carCounts.size()];
+        for (int i = 0; i < carCounts.size(); i++) {
+            carCountsArr[i] = carCounts.get(i);
+        }
+        return carCountsArr;
+    }
+
     public static void initNewCycle(Rectangle[] roads, int[] carCounts, Text[] timers, Text cycleTimer, Pane vehiclesPane, Pane lightsPane) {
         // carCounts and roads in shape of [north, east, south, west]
-        _inputCarCounts = carCounts;
-        _inputRoadRectangles = roads;
         _inputVehiclesPane = vehiclesPane;
         _cycleTimerUI = cycleTimer;
 
@@ -59,6 +76,32 @@ public class CycleManager {
             TrafficLight light = _trafficLights.get(i);
             Road road = light.getRoad();
             Vehicle[] vehicles = VehicleCreator.createVehicles(carCounts[i], vehiclesPane, light);
+            road.addVehiclesToRoad(vehicles);
+            road.setUpRoad();
+
+            _allVehicles.addAll(Arrays.asList(vehicles));
+        }
+    }
+
+    public static void initNewCycle(Rectangle[] roads, int upperLimit, Text[] timers, Text cycleTimer, Pane vehiclesPane, Pane lightsPane) {
+        // carCounts and roads in shape of [north, east, south, west]
+        int[] carCountsArr = getRandomVehicleCounts(upperLimit);
+
+        _inputVehiclesPane = vehiclesPane;
+        _cycleTimerUI = cycleTimer;
+
+        clearCycle();
+
+        for (int i = 0; i < carCountsArr.length; i++) {
+            TrafficLight light = new TrafficLight(Direction.values()[i], roads[i], timers[i], lightsPane, YELLOW_DURATION);
+            _trafficLights.add(light);
+        }
+
+        // creates vehicles
+        for (int i = 0; i < carCountsArr.length; i++) {
+            TrafficLight light = _trafficLights.get(i);
+            Road road = light.getRoad();
+            Vehicle[] vehicles = VehicleCreator.createVehicles(carCountsArr[i], vehiclesPane, light);
             road.addVehiclesToRoad(vehicles);
             road.setUpRoad();
 
@@ -124,7 +167,8 @@ public class CycleManager {
         return sum;
     }
 
-    // TODO - refactor
+    // TODO - ışıklar resete tıklanınca silinmiyor o yüzden üst üste binebiliyor ve cycle durationlar falan da resetlenmiyor.
+    // TODO - araba sayısıyla cycle duration tam olunca buglar oluyor mesela 1 1 1 1 araba olsun ve 4 saniye olsun duration hesaplanamıyor vb. bi ton olay oluyor.
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {
         int totalCars = 0;
@@ -150,8 +194,7 @@ public class CycleManager {
             pauseButton.setText("Pause");
         }
 
-        for(Vehicle vehicle : _allVehicles)
-        {
+        for (Vehicle vehicle : _allVehicles) {
             vehicle.toggleAnimations(_isPaused);
         }
     }
