@@ -21,6 +21,7 @@ public class CycleManager {
     private static List<Vehicle> _allVehicles = new ArrayList<>();
 
     private static Pane _inputVehiclesPane;
+    private static Pane _inputLightsPane;
     private static Group _transitionRectangles;
     private static Text _transitionTimer;
     private static Text _cycleTimerUI;
@@ -31,10 +32,13 @@ public class CycleManager {
     private static void clearCycle() {
         _isStarted = false;
         _startTime = System.nanoTime();
-        _trafficLights.clear();
         for (Vehicle vhc : _allVehicles) {
             _inputVehiclesPane.getChildren().remove(vhc.getUiImage());
         }
+        for (TrafficLight light : _trafficLights) {
+            _inputLightsPane.getChildren().remove(light.getUiImage());
+        }
+        _trafficLights.clear();
         _allVehicles.clear();
     }
 
@@ -62,6 +66,7 @@ public class CycleManager {
     public static void initNewCycle(Rectangle[] roads, int[] carCounts, Text[] timers, Text cycleTimer, Pane vehiclesPane, Pane lightsPane) {
         // carCounts and roads in shape of [north, east, south, west]
         _inputVehiclesPane = vehiclesPane;
+        _inputLightsPane = lightsPane;
         _cycleTimerUI = cycleTimer;
 
         clearCycle();
@@ -88,6 +93,7 @@ public class CycleManager {
         int[] carCountsArr = getRandomVehicleCounts(upperLimit);
 
         _inputVehiclesPane = vehiclesPane;
+        _inputLightsPane = lightsPane;
         _cycleTimerUI = cycleTimer;
 
         clearCycle();
@@ -167,7 +173,6 @@ public class CycleManager {
         return sum;
     }
 
-    // TODO - ışıklar resete tıklanınca silinmiyor o yüzden üst üste binebiliyor ve cycle durationlar falan da resetlenmiyor.
     // TODO - araba sayısıyla cycle duration tam olunca buglar oluyor mesela 1 1 1 1 araba olsun ve 4 saniye olsun duration hesaplanamıyor vb. bi ton olay oluyor.
 
     public static double calculateGreenLightDuration(TrafficLight lightToCalculate) {

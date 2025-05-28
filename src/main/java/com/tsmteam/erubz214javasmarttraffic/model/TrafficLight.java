@@ -21,6 +21,7 @@ public class TrafficLight {
     private double _lightLastChangeTime;
     private Pane _trafficLightPane;
     private Text _timerUI;
+    private ImageView _currentUiImage;
 
     public TrafficLight(Direction location, Rectangle road, Text timerUI, Pane trafficLightPane, double yellowLightDuration) {
         _location = location;
@@ -30,23 +31,40 @@ public class TrafficLight {
         _yellowLightDuration = yellowLightDuration;
         _timerUI = timerUI;
 
-        _lightImages = new HashMap<>();
+        _lightImages = getLightImagesFromFiles();
+    }
+
+    private HashMap<LightState, ImageView> getLightImagesFromFiles()
+    {
+        HashMap<LightState, ImageView> lightImages = new HashMap<>();
         Image redLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/kirmizisik.png"));
         ImageView redLightIV = new ImageView(redLightImage);
         Image greenLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/yesilisik.png"));
         ImageView greenLightIV = new ImageView(greenLightImage);
         Image yellowLightImage = new Image(VehicleCreator.class.getResourceAsStream("/com/tsmteam/erubz214javasmarttraffic/image/lights/sarisik.png"));
         ImageView yellowLightIV = new ImageView(yellowLightImage);
-        _lightImages.put(LightState.RED, redLightIV);
-        _lightImages.put(LightState.YELLOW, yellowLightIV);
-        _lightImages.put(LightState.GREEN, greenLightIV);
-        _trafficLightPane.getChildren().add(_lightImages.get(LightState.RED));
+
+        lightImages.put(LightState.RED, redLightIV);
+        lightImages.put(LightState.YELLOW, yellowLightIV);
+        lightImages.put(LightState.GREEN, greenLightIV);
+
+        _trafficLightPane.getChildren().add(redLightIV);
+        _currentUiImage = redLightIV;
+
+       setLightsUiRepresentation(redLightIV, greenLightIV, yellowLightIV);
+
+       return lightImages;
+    }
+
+    private void setLightsUiRepresentation(ImageView redLightIV, ImageView greenLightIV, ImageView yellowLightIV)
+    {
         redLightIV.setFitWidth(80);
         redLightIV.setFitHeight(80);
         greenLightIV.setFitWidth(80);
         greenLightIV.setFitHeight(80);
         yellowLightIV.setFitWidth(80);
         yellowLightIV.setFitHeight(80);
+
         switch (_location) {
             case NORTH -> {
                 redLightIV.setLayoutX(309);
@@ -86,6 +104,13 @@ public class TrafficLight {
     private void changeLightImage(LightState oldLightState, LightState newLightState) {
         _trafficLightPane.getChildren().remove(_lightImages.get(oldLightState));
         _trafficLightPane.getChildren().add(_lightImages.get(newLightState));
+
+        _currentUiImage = _lightImages.get(newLightState);
+    }
+
+    public ImageView getUiImage()
+    {
+        return _currentUiImage;
     }
 
     public void runFrame(double now) {
