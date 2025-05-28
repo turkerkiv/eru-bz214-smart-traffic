@@ -16,6 +16,7 @@ public class MainUI extends Application {
         Scene scene = new Scene(loader.load(), 690, 704);
 
         stage.setTitle("Smart Traffic UI with Scene Builder");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
