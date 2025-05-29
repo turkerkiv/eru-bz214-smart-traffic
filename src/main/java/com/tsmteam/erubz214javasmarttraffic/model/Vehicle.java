@@ -15,7 +15,6 @@ public class Vehicle {
     private double _speed;
     private ImageView _uiImage;
     private VehicleState _vehicleState;
-    private TrafficLight _connectedTrafficLight;
     private Road _destinationRoad;
     private Direction _initialLocation;
     private boolean _didTurn = false;

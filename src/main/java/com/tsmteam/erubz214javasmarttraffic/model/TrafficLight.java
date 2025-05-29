@@ -181,10 +181,6 @@ public class TrafficLight {
         return _greenLightDuration;
     }
 
-    public double getRLDuration() {
-        return _redLightDuration;
-    }
-
     public Direction getLocation() {
         return _location;
     }

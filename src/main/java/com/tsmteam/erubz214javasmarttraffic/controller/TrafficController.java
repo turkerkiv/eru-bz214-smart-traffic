@@ -68,7 +68,7 @@ public class TrafficController {
     private Tab randomTab;
 
 
-    AnimationLoop _animationLoop = new AnimationLoop();
+    private AnimationLoop _animationLoop = new AnimationLoop();
     private boolean _isRandom = false;
 
     public void initialize() {

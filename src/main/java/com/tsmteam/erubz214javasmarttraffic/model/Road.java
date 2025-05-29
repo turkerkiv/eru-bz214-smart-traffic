@@ -150,8 +150,4 @@ public class Road {
     public double getRoadLeftLine() {
         return _roadLeftLine;
     }
-
-    public double getRoadEndLine() {
-        return _roadEndLine;
-    }
 }
