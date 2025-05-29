@@ -82,3 +82,7 @@ The packaged application will be available in the `target` directory.
 - Türker Kıvılcım - [github](https://github.com/turkerkiv)
 - Seren Kaya - [github](https://github.com/SerenK00)
 - Furkan Mete Çalış - [github](https://github.com/metecalis)
+
+## UML Class diagram
+
+![image](./UmlClassDiagram.png)
